@@ -1,32 +1,11 @@
 #!/usr/bin/env python
 
-from FileInfo import FileTree
-from TreemapView import TreemapView
-import os
-from SimuQT import Size
+from Dumper import FileDumper
 
-class XMLDumper( object ) :
-    def __init__(self, rootpath=None, outputfile=None, size=None, tree=None) :
-        if rootpath != None :
-            tree = FileTree(unicode(rootpath))
-            tree.scan()
-        self._tree=tree
-        svgname = outputfile
-        if svgname == None :
-            name = os.path.split(rootpath)[1]
-            if name == '.' :
-                svgname = 'dirstat.svg'
-            else :
-                svgname = name + '.dirstat.svg'
-        self._svgname = svgname
-        self._size = size
-    def dump(self,gsize=None) :
-        if gsize != None :
-            self._size = gsize
-        if self._size == None :
-            self._size = Size(810,540)
-        tmv = TreemapView( self._tree, None, self._size )
-        size = tmv.visibleSize()
+class XMLDumper( FileDumper ) :
+    EXT='.svg'
+
+    def _start_dump(self) :
         header='''<?xml version='1.0' encoding='iso-8859-1'?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd ">
 <svg width="%(sizex)dpx" viewBox="0 0 %(sizex)d %(sizey)d " height="%(sizey)dpx" xmlns="http://www.w3.org/2000/svg" >
@@ -104,6 +83,11 @@ class XMLDumper( object ) :
         }
     </script>
     <g style="stroke:black; stroke-width:1px">\n'''
+        size = self._tmv.visibleSize()
+        self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
+
+
+    def _end_dump(self) :
         footer='''
     </g>
     <g id="infotips">
@@ -112,18 +96,15 @@ class XMLDumper( object ) :
     <text y="%(sizey)d" x="10" id="filesize" style="visibility:hidden;fill:rgb(80,0,0);font-weight:normal; font-family:'Arial';font-size:13;text-anchor:left;pointer-events:none"> </text>
     </g>
 </svg>\n'''
-        self._file = file(self._svgname,'wt')
-        self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
-        tmv.draw(self)
+        size = self._tmv.visibleSize()
         self._file.write(footer % {'sizex':size.x(),'sizey':size.y()})
-        self._file.close()
 
     def addrect(self,**kwargs) :
         kwargs['filename'] = kwargs['filename'].replace('\\','\\\\').replace('\'','\\\'').replace('&','&amp;').encode('iso-8859-1','replace');
         self._file.write('''        <rect x="%(x)d" y="%(y)d" height="%(height)d" width="%(width)d" onmouseover="setFileAttr(evt,'%(filename)s','%(filesize)s')" onmouseout="hideFileAttr(evt)" fill="%(color)s"/>\n''' % kwargs)
 
 def test():
-    XMLDumper(rootpath=u'.').dump()
+    XMLDumper().dump()
 
 if __name__ == '__main__' :
     test()

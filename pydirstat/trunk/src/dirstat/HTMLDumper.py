@@ -1,32 +1,11 @@
 #!/usr/bin/env python
 
-from FileInfo import FileTree
-from TreemapView import TreemapView
-import os
-from SimuQT import Size
+from Dumper import FileDumper
 
-class HTMLDumper( object ) :
-    def __init__(self, rootpath=None, outputfile=None, size=None, tree=None) :
-        if rootpath != None :
-            tree = FileTree(unicode(rootpath))
-            tree.scan()
-        self._tree=tree
-        svgname = outputfile
-        if svgname == None :
-            if os.path.isdir(rootpath) :
-                svgname = os.path.join(rootpath,'dirstat.html')
-            else :
-                name = os.path.split(rootpath)[1]
-                svgname = name + '.dirstat.html'
-        self._svgname = svgname
-        self._size = size
-    def dump(self,gsize=None) :
-        if gsize != None :
-            self._size = gsize
-        if self._size == None :
-            self._size = Size(810,540)
-        tmv = TreemapView( self._tree, None, self._size )
-        size = tmv.visibleSize()
+class HTMLDumper( FileDumper ) :
+    EXT='.html'
+
+    def _start_dump(self) :
         header='''<html>
 <head>
 <title>Repertoire </title>
@@ -103,16 +82,17 @@ function fileout(elm) {
 </span>
 <span class='panel'>
 '''
+        size = self._tmv.visibleSize()
+        self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
+
+    def _end_dump(self) :
         footer='''
 </span>
 </body>
 </html>
 '''
-        self._file = file(self._svgname,'wt')
-        self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
-        tmv.draw(self)
+        size = self._tmv.visibleSize()
         self._file.write(footer % {'sizex':size.x(),'sizey':size.y()})
-        self._file.close()
 
     def addrect(self,**kwargs) :
         kwargs['filename'] = kwargs['filename'].replace('\\','\\\\').replace('\'','&apos;').replace('\"','&quot;').replace('&','&amp;').encode('iso-8859-1','replace');
@@ -120,7 +100,7 @@ function fileout(elm) {
         self._file.write('''<span class='rect' onMouseOver='fileinfo(this,"%(filename)s","%(filesize)s")' onMouseOut='fileout(this)' style='left:%(x)dpx;top:%(y)dpx;width:%(width)dpx;height:%(height)dpx;background-color:%(color)s;border-color:%(colorx)s' /></span>\n''' % kwargs)
 
 def test():
-    HTMLDumper(rootpath=u'.').dump()
+    HTMLDumper().dump()
 
 if __name__ == '__main__' :
     test()
