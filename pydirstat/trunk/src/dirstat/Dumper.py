@@ -9,11 +9,15 @@ class FileDumper( object ) :
     EXT=".dump"
     NEEDHANDLE=True
     def __init__(self, rootpath=None, outputfile=None, size=None, tree=None) :
+        # Gruik Gruik : C:" -> C:\ Thanks Windows !
+        if len(outputfile) == 3 and outputfile[2] == '"' :
+            outputfile = outputfile[0:2] + '\\'
         if (rootpath == None) and (tree==None) :
             rootpath = u'.'
         if rootpath != None :
             tree = FileTree(unicode(rootpath))
             tree.scan()
+
         self._tree=tree
         filename = outputfile
         if filename == None :
