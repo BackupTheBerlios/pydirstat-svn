@@ -5,7 +5,7 @@
 !define PRODUCT_PUBLISHER "pyDirStat Developpement team"
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
 !define PRODUCT_PYTHON_NAME "pdshtml"
-!define PRODUCT_VERSION "0.9.5"
+!define PRODUCT_VERSION "0.9.6"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
@@ -86,6 +86,7 @@ Section "Main" SecMain
     SetOutPath "$INSTDIR"
 
     File /r "..\src\dist\*"
+    File "..\res\msvcr71.dll"
 
     WriteRegStr "${PRODUCT_ROOT_KEY}" "${PRODUCT_PATH_KEY}" "Install_dir" $INSTDIR
     WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME})"
