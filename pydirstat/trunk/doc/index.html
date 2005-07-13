@@ -14,6 +14,9 @@ a:link { text-decoration:none; }
 a:visited { text-decoration:none; }
 a:active { text-decoration:none; }
 a:hover { text-decoration:underline; color:#ff0000; }
+img { border: solid 1px #000000; }
+img.screenshot { align: center; }
+p.screenshot { text-align: center; font-weight: bold; top-margin: 5px; bottom-margin: 20px; }
 </style>
 </head>
 <body>
@@ -34,10 +37,22 @@ a:hover { text-decoration:underline; color:#ff0000; }
     <p><i>Windows</i> users should use the <i>.exe</i> that will install
     pydirstat on the right click of folders.</p>
     <p>Every other users should use the .tar.gz.</p>
+    <p>You'll find both on the <a href='http://developer.berlios.de/project/showfiles.php?group_id=3108'>download page</a>.
   <h2>Output</h2>
     <p>You can generate either HTML, SVG or SWF (Flash) with pydirstat.</p>
     <p>Note that you'll need <i><a href='http://ming.sf.net/'>ming</a></i> for python to generate SWF.</p>
   <h2>Screenshots</h2>
-    <p>Soon...</p>
+    <img class='screenshot' src='http://developer.berlios.de/dbimage.php?id=1825' alt='HTML page of the result of pydirstat. The cursor is over the "red" square. You can see that the file dl645mi.dll takes about 3MB'/>
+    <p class='screenshot'>HTML page of the result of pydirstat. The cursor is over the "red" square. You can see that the file dl645mi.dll takes about 3MB. </p>
+
+    <img class='screenshot' src='http://developer.berlios.de/dbimage.php?id=1826' alt='HTML page of the result of pydirstat. The cursor is over the "red" square. You can see that the file necko.dll takes about 577kB. You can see also that the wool dir components is about the same size that the last file dl645mi.dll. '/>
+    <p class='screenshot'>HTML page of the result of pydirstat. The cursor is over the "red" square. You can see that the file necko.dll takes about 577kB. You can see also that the wool dir components is about the same size that the last file dl645mi.dll. </p>
+
+    <img class='screenshot' src='http://developer.berlios.de/dbimage.php?id=1827' alt='HTML page of the result of pydirstat. The cursor is over the "red" square. The file space2.wav is sound file. It\'s color is yellow, while dll files are ugly-pink. It\'s file type has it\'s own color. '/>
+    <p class='screenshot'>HTML page of the result of pydirstat. The cursor is over the "red" square. The file space2.wav is sound file. It's color is yellow, while dll files are ugly-pink. It's file type has it's own color. </p>
+
+    <img class='screenshot' src='http://developer.berlios.de/dbimage.php?id=1828' alt='HTML page of the result of pydirstat. The cursor is over the "red" square. It\'s easy to find big files. It\'s also easy to compare the size of the file with a dir several small files like "dark-blue" ones. '/>
+    <p class='screenshot'>HTML page of the result of pydirstat. The cursor is over the "red" square. It's easy to find big files. It's also easy to compare the size of the file with a dir several small files like "dark-blue" ones. </p>
+
 </body>
 </html>
