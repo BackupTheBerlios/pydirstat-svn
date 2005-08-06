@@ -5,7 +5,7 @@
 !define PRODUCT_PUBLISHER "pyDirStat Developpement team"
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
 !define PRODUCT_PYTHON_NAME "pdshtml"
-!define PRODUCT_VERSION "0.9.6"
+!define PRODUCT_VERSION "0.9.7"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
@@ -14,6 +14,8 @@
 !define PRODUCT_EXE "${PRODUCT_PYTHON_NAME}.exe"
 !define PRODUCT_APPPATH_ROOTKEY "HKLM"
 !define PRODUCT_APPPATH_KEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_EXE}"
+;--------------------------------------------------------------------
+!define PRODUCT_NAME_VERSION "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 ;--------------------------------------------------------------------
 SetCompressor LZMA
 ;--------------------------------------------------------------------
@@ -68,7 +70,7 @@ SetCompressor LZMA
 ;====================================================================
 ; Variables
 ;--------------------------------------------------------------------
-Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
+Name "${PRODUCT_NAME_VERSION}"
 
 OutFile "${PRODUCT_DEPLOIEMENT_PATH}\${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
 
@@ -89,7 +91,7 @@ Section "Main" SecMain
     File "..\res\msvcr71.dll"
 
     WriteRegStr "${PRODUCT_ROOT_KEY}" "${PRODUCT_PATH_KEY}" "Install_dir" $INSTDIR
-    WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME})"
+    WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME_VERSION})"
     WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}\command" "" '$INSTDIR\${PRODUCT_EXE} "%1"'
 
 SectionEnd
@@ -97,7 +99,7 @@ SectionEnd
 
 Section -Post
     WriteUninstaller "${UNINSTALL_EXE}"
-    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "${UNINSTALL_EXE}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"

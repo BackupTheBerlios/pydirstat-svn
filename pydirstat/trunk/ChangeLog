@@ -1,0 +1,77 @@
+2004-08-06  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.7
+
+    * Adding this ChangeLog file
+
+    * Directories that can't be read doesn't crash pydirstat anymore
+    (Thanks Nicolas "Pixel" Noble for reporting this bug)
+
+2004-07-13  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.6
+
+    * pydirstat used under windows from explorer (right-click) on a root drive doesn't work, as
+    pdshtml receive C:" instead of C:\ (windows calls <pydirstat "C:\">... stupid that would have
+    never happened if dos/windows has used / instead of \ years ago)
+    (Thanks Nicolas "Pixel" Noble for reporting this bug)
+
+    * some screen shots on the web page
+
+2004-05-13  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * Adding a web page
+
+2004-02-17  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.5
+
+    * .exe include msvcr71.dll as it's not on all systems
+
+    * XMLDumper, MingDumper, HTMLDumper, Dumper : Refactoring on Dumpers, each backend now inherit
+    from a mother class "Dumper" to factorize common code.
+
+2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.4
+
+    * Import sources on berlios.de (creation of the project pydirstat.berlios.de)
+
+2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.3
+
+    * Only pdshtml is compiled for windows
+
+    * Small bug correction in NSIS script
+
+2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.2
+
+    * pydistat has now it's own icon
+
+2004-02-12  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.1
+
+    * HTML output support
+
+    * pydirstat has now a NSIS installer under windows
+
+2004-01-30  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * Creation of XMLDumper to have several backends (only SVG/XML was used for now)
+    * pydirstat now can use ming/flash to generate output
+
+2004-12-18  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * Backward compatibility with python 2.2 (use own os.walk if not exists)
+
+    * Use unicode strings to avoid explosion when parsing non ascii file names
+
+    * First windows .exe version
+
+2004-12-12  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * First stable source set, pydirstat main algo is taken from kdirstat source code
