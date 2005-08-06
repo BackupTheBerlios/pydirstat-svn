@@ -458,11 +458,12 @@ class FileTree( object ) :
                     pass
                 
             for subpath in subpaths :
-                completepath = os.path.join(path,subpath)
-                # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
-                dirInfo.insertChild(pathinfos[completepath])
-                # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
-                del pathinfos[completepath]
+                if completepath in pathinfos :
+                    completepath = os.path.join(path,subpath)
+                    # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
+                    dirInfo.insertChild(pathinfos[completepath])
+                    # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
+                    del pathinfos[completepath]
                 
             dirInfo.finalizeLocal()
                 
