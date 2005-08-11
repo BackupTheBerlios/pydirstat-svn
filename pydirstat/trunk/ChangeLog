@@ -1,3 +1,10 @@
+2004-08-11  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.8
+
+    * src\dirstat\FileInfo.py : terrible regression in pysirstat 0.9.7, recursion was almost non-working...
+    dur to a "small" line inversion...
+
 2004-08-06  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.7
