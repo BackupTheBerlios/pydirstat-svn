@@ -1,3 +1,8 @@
+2004-08-27  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * src\dirstat\TreemapView.py : .mkv is know colored as a movie, .iso is know colored as an archive
+    (Thanks metal)
+
 2004-08-11  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.8

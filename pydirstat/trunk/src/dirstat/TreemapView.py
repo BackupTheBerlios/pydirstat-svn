@@ -172,6 +172,7 @@ class TreemapView( object ):
             "wmv"       : 'movie' ,
             "asf"       : 'movie' ,
             "ogm"       : 'movie' ,
+            "mkv"       : 'movie' ,
             "pdf"       : 'document' ,
             "ps"        : 'image' ,
 
@@ -180,7 +181,8 @@ class TreemapView( object ):
             "dll"       : 'lib',
             "zip"       : 'compress',
             "rar"       : 'compress',
-            "arj"       : 'compress' ,
+            "arj"       : 'compress',
+            "iso"       : 'compress',
 
             "bpk"       : 'dev',
             "tds"       : 'compiled',
