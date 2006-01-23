@@ -13,9 +13,13 @@ class FileDumper( object ) :
         if rootpath and (len(rootpath)==3) and (rootpath[2]) == '"' :
             rootpath = rootpath[0:2] + '\\'
         if (rootpath == None) and (tree==None) :
-            rootpath = u'.'
+            rootpath = '.'
         if rootpath != None :
-            tree = FileTree(unicode(rootpath))
+            if os.path.supports_unicode_filenames :
+                rootpath = unicode(rootpath)
+            else :
+                rootpath = str(rootpath)
+            tree = FileTree(rootpath)
             tree.scan()
 
         self._tree=tree

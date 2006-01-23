@@ -16,5 +16,5 @@ def main(path=None,gsize=None,outputfile=None) :
     Dumper(path,outputfile).dump(gsize)
 
 if __name__ == '__main__' :
-    main(u'.')
+    main('.')
 
