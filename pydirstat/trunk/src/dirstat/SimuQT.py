@@ -223,7 +223,22 @@ class Color( object ):
             if colors :
                 (self._r, self._g, self._b) = colors
             else :
-                (self._r, self._g, self._b) = (0x33, 0x33, 0x33)
+                colok_ok = False
+                HEXDIGITS = '0123456789abcdef'
+                if (self._colorname[0] == '#') and (len(self._colorname) in (4,7)) :
+                    listcolor = []
+                    for hexdigit in self._colorname[1:].lower() :
+                        if hexdigit in HEXDIGITS :
+                            listcolor.append(HEXDIGITS.index(hexdigit))
+                    if len(listcolor) == 3 :
+                        (self._r, self._g, self._b) = (listcolor[0]*0x11,listcolor[1]*0x11,listcolor[2]*0x11)
+                        colok_ok = True
+                    if len(listcolor) == 6 :
+                        (self._r, self._g, self._b) = (listcolor[0]*0x10+listcolor[1],listcolor[2]*0x10+listcolor[3],listcolor[4]*0x10+listcolor[5])
+                        colok_ok = True
+                            
+                if not(colok_ok) :
+                    (self._r, self._g, self._b) = (0x33, 0x33, 0x33)
     def get_svgcolor( self ):
         if self._colorname :
             return self._colorname
@@ -262,6 +277,7 @@ def test():
     print "t+t : %s" % (t+t,)
     print "t+s : %s" % (t+s,)
 
+    print Color('cyan')
 
 if __name__ == '__main__' :
     test()

@@ -15,7 +15,7 @@ if len(sys.argv) == 1 :
 
 setup(
     name='pdshtml',
-    console=['pdshtml.py'],
+    console=['pdshtml.py','pds-config.py'],
     icon='../res/pydirstat.ico',
     options={
         "py2exe" : {

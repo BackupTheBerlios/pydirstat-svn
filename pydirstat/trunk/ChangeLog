@@ -1,3 +1,13 @@
+2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * nsis/pydirstat.nsi, src/dirstat/Configuration.py,
+    src/dirstat/Dumper.py, src/dirstat/HTMLDumper.py,
+    src/dirstat/SimuQT.py, src/dirstat/TreemapView.py,
+    src/pds-config.py, src/wsetup.py : Added a configuration class
+    and a simple tool to help configuration
+
+    * nsis/pydirstat.nsi : 0.9.10-pre
+
 2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.9

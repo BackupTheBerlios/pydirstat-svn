@@ -99,7 +99,7 @@ document.write('<div id="tooltip" class="tooltip"></div>');
   position:absolute;
   left:5;
   top:5;
-  width:810;
+  width:%(sizex)s;
   height:30;
   font-family:Verdana,Arial,Lucida,Sans-Serif;
   font-size:11px;

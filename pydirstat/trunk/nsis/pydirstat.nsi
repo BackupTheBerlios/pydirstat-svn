@@ -5,13 +5,15 @@
 !define PRODUCT_PUBLISHER "pyDirStat Developpement team"
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
 !define PRODUCT_PYTHON_NAME "pdshtml"
-!define PRODUCT_VERSION "0.9.9"
+!define PRODUCT_PYTHON_NAME_CONFIG "pds-config"
+!define PRODUCT_VERSION "0.9.10-pre"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_DEPLOIEMENT_PATH "."
 !define PRODUCT_EXE "${PRODUCT_PYTHON_NAME}.exe"
+!define PRODUCT_EXE_CONFIG "${PRODUCT_PYTHON_NAME_CONFIG}.exe"
 !define PRODUCT_APPPATH_ROOTKEY "HKLM"
 !define PRODUCT_APPPATH_KEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_EXE}"
 ;--------------------------------------------------------------------
@@ -89,6 +91,7 @@ Section "Main" SecMain
 
     File /r "..\src\dist\*"
     File "..\res\msvcr71.dll"
+    File "..\res\pydirstat.ico"
 
     WriteRegStr "${PRODUCT_ROOT_KEY}" "${PRODUCT_PATH_KEY}" "Install_dir" $INSTDIR
     WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME_VERSION})"
@@ -108,6 +111,7 @@ SectionEnd
 
 Section -AdditionalIcons
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Configure ${PRODUCT_NAME_VERSION}.lnk" "$INSTDIR\${PRODUCT_EXE_CONFIG}" "" "$INSTDIR\pydirstat.ico"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${UNINSTALL_NOM}" "${UNINSTALL_EXE}"
 SectionEnd
 
@@ -134,6 +138,7 @@ FunctionEnd
 Section Uninstall
     Delete "${UNINSTALL_EXE}"
     Delete "$SMPROGRAMS\${PRODUCT_NAME}\${UNINSTALL_NOM}"
+    Delete "$SMPROGRAMS\${PRODUCT_NAME}\Configure ${PRODUCT_NAME_VERSION}.lnk"
     RMDir /r "$SMPROGRAMS\${PRODUCT_NAME}"
 
     RMDir /r "$INSTDIR"

@@ -14,7 +14,7 @@ from SimuQT import Size, Point, Rect, Color, Canvas
 import os
 
 class TreemapView( object ):
-    def __init__( self, tree, parent, initialSize ):
+    def __init__( self, tree, initialSize, configuration ):
         self._tree = tree
         self._rootTile = None
         self._selectedTile = None
@@ -22,6 +22,7 @@ class TreemapView( object ):
         self._tilestodraw = []
         # Not in KDirStat
         self._initialSize = initialSize
+        self._configuration = configuration
 
         self.readConfig()
 
@@ -113,109 +114,120 @@ class TreemapView( object ):
         # [PyInfo] : file is a FileInfo
         # [TODO] : Configuration ! I don't like hardcoded colors.
 
-        tabext={
-            "~"         : 'tmp',
-            "bak"       : 'tmp',
+        tabext = self._configuration.get_section('type:extension')
+        tablowerext = self._configuration.get_section('type:extensionlower')
+        contain = self._configuration.get_section('type:contain')
+        exactmatch = self._configuration.get_section('type:exactmatch')
 
-            "c"         : 'dev',
-            "cpp"       : 'dev',
-            "cc"        : 'dev',
-            "h"         : 'dev',
-            "hpp"       : 'dev',
-            "el"        : 'dev',
-            "y"         : 'dev',
-            "l"         : 'dev',
-            "py"        : 'dev',
-            "pl"        : 'dev',
-            "sh"        : 'dev',
+        colormatch = {}
+        colorconfig = self._configuration.get_section('color')
+        for key in colorconfig :
+            colormatch[key] = Color(colorconfig[key])
 
-            "o"         : 'compiled',
-            "lo"        : 'compiled',
-            "Po"        : 'compiled',
-            "al"        : 'compiled',
-            "moc.cpp"   : 'compiled',
-            "moc.cc"    : 'compiled',
-            "elc"       : 'compiled',
-            "la"        : 'compiled',
-            "a"         : 'compiled',
-            "rpm"       : 'compiled',
-            "pyc"       : 'compiled',
-            }
+        ## tabext={
+        ##     "~"         : 'tmp',
+        ##     "bak"       : 'tmp',
+        ## 
+        ##     "c"         : 'dev',
+        ##     "cpp"       : 'dev',
+        ##     "cc"        : 'dev',
+        ##     "h"         : 'dev',
+        ##     "hpp"       : 'dev',
+        ##     "el"        : 'dev',
+        ##     "y"         : 'dev',
+        ##     "l"         : 'dev',
+        ##     "py"        : 'dev',
+        ##     "pl"        : 'dev',
+        ##     "sh"        : 'dev',
+        ## 
+        ##     "o"         : 'compiled',
+        ##     "lo"        : 'compiled',
+        ##     "Po"        : 'compiled',
+        ##     "al"        : 'compiled',
+        ##     "moc.cpp"   : 'compiled',
+        ##     "moc.cc"    : 'compiled',
+        ##     "elc"       : 'compiled',
+        ##     "la"        : 'compiled',
+        ##     "a"         : 'compiled',
+        ##     "rpm"       : 'compiled',
+        ##     "pyc"       : 'compiled',
+        ##     }
+        ## 
+        ## tablowerext = {
+        ##     "tar.bz2"   : 'compress'  ,
+        ##     "tar.gz"    : 'compress'  ,
+        ##     "tgz"       : 'compress'  ,
+        ##     "bz2"       : 'compress'  ,
+        ##     "bz"        : 'compress'  ,
+        ##     "gz"        : 'compress'  ,
+        ##     "html"      : 'document' ,
+        ##     "htm"       : 'document' ,
+        ##     "txt"       : 'document' ,
+        ##     "doc"       : 'document' ,
+        ##     "png"       : 'image'   ,
+        ##     "jpg"       : 'image'   ,
+        ##     "jpeg"      : 'image'   ,
+        ##     "gif"       : 'image'   ,
+        ##     "tif"       : 'image'   ,
+        ##     "tiff"      : 'image'   ,
+        ##     "bmp"       : 'image'   ,
+        ##     "xpm"       : 'image'   ,
+        ##     "tga"       : 'image'   ,
+        ##     "svg"       : 'image'   ,
+        ##     "wav"       : 'sound' ,
+        ##     "mp3"       : 'sound' ,
+        ##     "avi"       : 'movie' ,
+        ##     "mov"       : 'movie' ,
+        ##     "mpg"       : 'movie' ,
+        ##     "mpeg"      : 'movie' ,
+        ##     "wmv"       : 'movie' ,
+        ##     "asf"       : 'movie' ,
+        ##     "ogm"       : 'movie' ,
+        ##     "mkv"       : 'movie' ,
+        ##     "pdf"       : 'document' ,
+        ##     "ps"        : 'image' ,
+        ## 
+        ##     "exe"       : 'exec',
+        ##     "com"       : 'exec',
+        ##     "dll"       : 'lib',
+        ##     "zip"       : 'compress',
+        ##     "rar"       : 'compress',
+        ##     "arj"       : 'compress',
+        ##     "iso"       : 'compress',
+        ## 
+        ##     "bpk"       : 'dev',
+        ##     "tds"       : 'compiled',
+        ##     "obj"       : 'compiled',
+        ##     "bpl"       : 'lib',
+        ## 
+        ##     }
+        ## 
+        ## contain = {
+        ##     ".so."      : 'lib',
+        ## 
+        ##     }
+        ## 
+        ## exactmatch = {
+        ##     "core"      : 'tmp',
+        ## 
+        ##     }
+        ## 
+        ## colormatch = {
+        ##     'tmp'       : Color('red'),
+        ##     'dev'       : Color('slateblue'),
+        ##     'document'  : Color('blue'),
+        ##     'compiled'  : Color('darkblue'), #Color( 0xff, 0xa0, 0x00 ),
+        ##     'compress'  : Color('green'),
+        ##     'image'     : Color('darkred'),
+        ##     'sound'     : Color('yellow'),
+        ##     'movie'     : Color( 0xa0, 0xff, 0x00 ),
+        ##     'lib'       : Color( 0xff, 0xa0, 0xa0 ),
+        ##     'exec'      : Color('magenta'),
+        ##     'file'      : Color('lightblue'),
+        ##     'dir'       : Color('white'),
+        ##     '_'         : Color('purple'),
+        ##     }
 
-        tablowerext = {
-            "tar.bz2"   : 'compress'  ,
-            "tar.gz"    : 'compress'  ,
-            "tgz"       : 'compress'  ,
-            "bz2"       : 'compress'  ,
-            "bz"        : 'compress'  ,
-            "gz"        : 'compress'  ,
-            "html"      : 'document' ,
-            "htm"       : 'document' ,
-            "txt"       : 'document' ,
-            "doc"       : 'document' ,
-            "png"       : 'image'   ,
-            "jpg"       : 'image'   ,
-            "jpeg"      : 'image'   ,
-            "gif"       : 'image'   ,
-            "tif"       : 'image'   ,
-            "tiff"      : 'image'   ,
-            "bmp"       : 'image'   ,
-            "xpm"       : 'image'   ,
-            "tga"       : 'image'   ,
-            "svg"       : 'image'   ,
-            "wav"       : 'sound' ,
-            "mp3"       : 'sound' ,
-            "avi"       : 'movie' ,
-            "mov"       : 'movie' ,
-            "mpg"       : 'movie' ,
-            "mpeg"      : 'movie' ,
-            "wmv"       : 'movie' ,
-            "asf"       : 'movie' ,
-            "ogm"       : 'movie' ,
-            "mkv"       : 'movie' ,
-            "pdf"       : 'document' ,
-            "ps"        : 'image' ,
-
-            "exe"       : 'exec',
-            "com"       : 'exec',
-            "dll"       : 'lib',
-            "zip"       : 'compress',
-            "rar"       : 'compress',
-            "arj"       : 'compress',
-            "iso"       : 'compress',
-
-            "bpk"       : 'dev',
-            "tds"       : 'compiled',
-            "obj"       : 'compiled',
-            "bpl"       : 'lib',
-
-            }
-
-        contain = {
-            ".so."      : 'lib',
-
-            }
-
-        exactmatch = {
-            "core"      : 'tmp',
-
-            }
-
-        colormatch = {
-            'tmp'       : Color('red'),
-            'dev'       : Color('slateblue'),
-            'document'  : Color('blue'),
-            'compiled'  : Color('darkblue'), #Color( 0xff, 0xa0, 0x00 ),
-            'compress'  : Color('green'),
-            'image'     : Color('darkred'),
-            'sound'     : Color('yellow'),
-            'movie'     : Color( 0xa0, 0xff, 0x00 ),
-            'lib'       : Color( 0xff, 0xa0, 0xa0 ),
-            'exec'      : Color('magenta'),
-            'file'      : Color('lightblue'),
-            'dir'       : Color('white'),
-            '_'         : Color('purple'),
-            }
         defaultColor = colormatch.get('_',Color('purple'))
 
         if file :
