@@ -14,31 +14,98 @@ class HTMLDumper( FileDumper ) :
 function fileinfo(elm,filename,filesize) {
  document.getElementById("filename").innerHTML=filename;
  document.getElementById("filesize").innerHTML=filesize;
+ // document.getElementById("tooltip").innerHTML = "<b>Nom du fichier : </b>"+filename+"<br /><b>Taille du fichier : </b>"+filesize;
+ // show();
  elm._oldcolor=elm.style.backgroundColor;
  elm.style.backgroundColor="#ff0000";
 }
 function fileout(elm) {
  document.getElementById("filename").innerHTML="";
  document.getElementById("filesize").innerHTML="";
+ // document.getElementById("tooltip").innerHTML = "";
+ // hide();
  elm.style.backgroundColor=elm._oldcolor;
 }
+tooltipOn = false;
+function show(){
+  if (true){
+    document.getElementById("tooltip").xwidth = document.getElementById("tooltip").offsetWidth;
+    document.getElementById("tooltip").xheight = document.getElementById("tooltip").offsetHeight;
+    mainwidth = 0
+    mainheight = 0
+    if( typeof( window.innerWidth ) == 'number' ) {
+      mainwidth = window.innerWidth;
+      mainheight = window.innerHeight;
+    } else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+      mainwidth = document.documentElement.clientWidth;
+      mainheight = document.documentElement.clientHeight;
+    } else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+      mainwidth = document.body.clientWidth;
+      mainheight = document.body.clientHeight;
+    }
+    document.getElementById("tooltip").mainwidth = mainwidth
+    document.getElementById("tooltip").mainheight = mainheight
+    // document.getElementById("tooltip").innerHTML = "";
+    tooltipOn = true;
+  }
+}
+function hide(){
+  tooltipOn = false
+}
+function getPosition(p){
+  x = (navigator.appName.substring(0,3) == "Net") ? p.pageX : event.x+document.body.scrollLeft;
+  y = (navigator.appName.substring(0,3) == "Net") ? p.pageY : event.y+document.body.scrollTop;
+  if(tooltipOn){
+    xleft = x-120;
+    xtop = y+25;
+    xwidth = document.getElementById("tooltip").xwidth;
+    xheight = document.getElementById("tooltip").xheight;
+
+    mainwidth = document.getElementById("tooltip").mainwidth
+    mainheight = document.getElementById("tooltip").mainheight
+
+    if (xleft+xwidth>mainwidth) { xleft = mainwidth-xwidth; }
+    if (xleft<0) { xleft = 0; }
+    if (xtop+xheight>mainheight) { xtop = mainheight-xheight; }
+    if (xtop<0) { xtop = 0; }
+
+    document.getElementById("tooltip").style.top = xtop;
+    document.getElementById("tooltip").style.left = xleft;
+    document.getElementById("tooltip").style.visibility = "visible";
+  }
+  else{
+    document.getElementById("tooltip").style.visibility = "hidden";
+    document.getElementById("tooltip").style.top = 0;
+    document.getElementById("tooltip").style.left = 0;
+  }
+}
+// document.onmousemove = getPosition;
+document.write('<div id="tooltip" class="tooltip"></div>');
 -->
 </script>
 <style type='text/css'>
 <!--
+.tooltip {
+  z-index:800;
+  position:absolute;
+  font-family:Verdana,Arial,Lucida,Sans-Serif;
+  font-size:11px;
+  border: solid 1px #808080;
+  background-color:#E4E0D8;
+  visibility:hidden;
+  padding:1;
+}
 .info {
   position:absolute;
   left:5;
   top:5;
-  width:%(sizex)s;
+  width:810;
   height:30;
   font-family:Verdana,Arial,Lucida,Sans-Serif;
   font-size:11px;
   font-weight:bold;
-  background-color:#efe;
-  border: solid 1px #8c8;
-  padding : 2px;
-  margin: 2px;
+  border: solid 1px #808080;
+  background-color:#E4E0D8;
   white-space: nowrap;
   overflow: visible;
 }

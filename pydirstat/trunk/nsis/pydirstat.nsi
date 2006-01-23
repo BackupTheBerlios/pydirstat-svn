@@ -5,7 +5,7 @@
 !define PRODUCT_PUBLISHER "pyDirStat Developpement team"
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
 !define PRODUCT_PYTHON_NAME "pdshtml"
-!define PRODUCT_VERSION "0.9.8"
+!define PRODUCT_VERSION "0.9.9"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
