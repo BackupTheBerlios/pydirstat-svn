@@ -1,16 +1,31 @@
-2004-08-27  Gissehel <gissehel-pds@giss.mine.nu>
+2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.9
+
+2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * src\dirstat\HTMLDumper.py : Test for a tooltip handling. The code is there but not enabled : too slow on
+    big trees
+
+2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * src\pdshtml.py, src\pdsswf.py, src\dirstat\Dumper.py : There was a bug in the unicode handling.
+    Now walk use os.path.supports_unicode_filenames to if we should use unicode or not.
+    Problem reported by Shane Geiger, solution by raKos
+
+2005-08-27  Gissehel <gissehel-pds@giss.mine.nu>
 
     * src\dirstat\TreemapView.py : .mkv is know colored as a movie, .iso is know colored as an archive
     (Thanks metal)
 
-2004-08-11  Gissehel <gissehel-pds@giss.mine.nu>
+2005-08-11  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.8
 
     * src\dirstat\FileInfo.py : terrible regression in pysirstat 0.9.7, recursion was almost non-working...
     dur to a "small" line inversion...
 
-2004-08-06  Gissehel <gissehel-pds@giss.mine.nu>
+2005-08-06  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.7
 
@@ -19,7 +34,7 @@
     * Directories that can't be read doesn't crash pydirstat anymore
     (Thanks Nicolas "Pixel" Noble for reporting this bug)
 
-2004-07-13  Gissehel <gissehel-pds@giss.mine.nu>
+2005-07-13  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.6
 
@@ -30,11 +45,11 @@
 
     * some screen shots on the web page
 
-2004-05-13  Gissehel <gissehel-pds@giss.mine.nu>
+2005-05-13  Gissehel <gissehel-pds@giss.mine.nu>
 
     * Adding a web page
 
-2004-02-17  Gissehel <gissehel-pds@giss.mine.nu>
+2005-02-17  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.5
 
@@ -43,13 +58,13 @@
     * XMLDumper, MingDumper, HTMLDumper, Dumper : Refactoring on Dumpers, each backend now inherit
     from a mother class "Dumper" to factorize common code.
 
-2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+2005-02-13  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.4
 
     * Import sources on berlios.de (creation of the project pydirstat.berlios.de)
 
-2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+2005-02-13  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.3
 
@@ -57,13 +72,13 @@
 
     * Small bug correction in NSIS script
 
-2004-02-13  Gissehel <gissehel-pds@giss.mine.nu>
+2005-02-13  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.2
 
     * pydistat has now it's own icon
 
-2004-02-12  Gissehel <gissehel-pds@giss.mine.nu>
+2005-02-12  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.1
 
@@ -71,7 +86,7 @@
 
     * pydirstat has now a NSIS installer under windows
 
-2004-01-30  Gissehel <gissehel-pds@giss.mine.nu>
+2005-01-30  Gissehel <gissehel-pds@giss.mine.nu>
 
     * Creation of XMLDumper to have several backends (only SVG/XML was used for now)
     * pydirstat now can use ming/flash to generate output
