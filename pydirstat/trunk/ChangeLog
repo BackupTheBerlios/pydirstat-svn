@@ -1,5 +1,16 @@
 2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
 
+    * src/dirstat/HTMLDumper.py : There as still a bug with non-ascii
+    chars.
+    
+    * src/dirstat/TreemapView.py : Cleaning for the data which are now
+    in the configuration file/system
+    
+    * src/dirstat/Configuration.py : Correction of a bug that make
+    color structures unavailable if you don't have a config file.
+
+2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
+
     * nsis/pydirstat.nsi, src/dirstat/Configuration.py,
     src/dirstat/Dumper.py, src/dirstat/HTMLDumper.py,
     src/dirstat/SimuQT.py, src/dirstat/TreemapView.py,
@@ -14,25 +25,25 @@
 
 2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
 
-    * src\dirstat\HTMLDumper.py : Test for a tooltip handling. The code is there but not enabled : too slow on
+    * src/dirstat/HTMLDumper.py : Test for a tooltip handling. The code is there but not enabled : too slow on
     big trees
 
 2006-01-23  Gissehel <gissehel-pds@giss.mine.nu>
 
-    * src\pdshtml.py, src\pdsswf.py, src\dirstat\Dumper.py : There was a bug in the unicode handling.
+    * src/pdshtml.py, src/pdsswf.py, src/dirstat/Dumper.py : There was a bug in the unicode handling.
     Now walk use os.path.supports_unicode_filenames to if we should use unicode or not.
     Problem reported by Shane Geiger, solution by raKos
 
 2005-08-27  Gissehel <gissehel-pds@giss.mine.nu>
 
-    * src\dirstat\TreemapView.py : .mkv is know colored as a movie, .iso is know colored as an archive
+    * src/dirstat/TreemapView.py : .mkv is know colored as a movie, .iso is know colored as an archive
     (Thanks metal)
 
 2005-08-11  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.8
 
-    * src\dirstat\FileInfo.py : terrible regression in pysirstat 0.9.7, recursion was almost non-working...
+    * src/dirstat/FileInfo.py : terrible regression in pysirstat 0.9.7, recursion was almost non-working...
     dur to a "small" line inversion...
 
 2005-08-06  Gissehel <gissehel-pds@giss.mine.nu>

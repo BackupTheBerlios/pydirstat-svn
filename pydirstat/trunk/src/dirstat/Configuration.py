@@ -198,11 +198,11 @@ class _Configuration (object) :
                             self._othersections[mode] = {}
                         self._othersections[mode][key] = strvalue
 
-            for section in othersections :
-                if section not in self._othersections :
-                    self._othersections[section] = {}
-                    for key in othersections[section] :
-                        self._othersections[section][key] = othersections[section][key]
+        for section in othersections :
+            if section not in self._othersections :
+                self._othersections[section] = {}
+                for key in othersections[section] :
+                    self._othersections[section][key] = othersections[section][key]
 
     def save(self,filename=None) :
         filename = self._get_filename(filename)

@@ -162,7 +162,11 @@ document.write('<div id="tooltip" class="tooltip"></div>');
         self._file.write(footer % {'sizex':size.x(),'sizey':size.y()})
 
     def addrect(self,**kwargs) :
-        kwargs['filename'] = kwargs['filename'].replace('\\','\\\\').replace('\'','&apos;').replace('\"','&quot;').replace('&','&amp;').encode('iso-8859-1','replace');
+        filename = kwargs['filename'].replace('\\','\\\\').replace('\'','&apos;').replace('\"','&quot;').replace('&','&amp;')
+        if type(filename) != type(u'') :
+            filename = filename.decode('utf8','replace')
+        filename = filename.encode('iso-8859-1','replace');
+        kwargs['filename'] = filename
         kwargs['colorx'] = kwargs['color'].get_htmlcolor_extended(lambda x:int(x*0.6))
         self._file.write('''<span class='rect' onMouseOver='fileinfo(this,"%(filename)s","%(filesize)s")' onMouseOut='fileout(this)' style='left:%(x)dpx;top:%(y)dpx;width:%(width)dpx;height:%(height)dpx;background-color:%(color)s;border-color:%(colorx)s' /></span>\n''' % kwargs)
 

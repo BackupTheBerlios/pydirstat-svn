@@ -14,7 +14,7 @@ def main() :
             if line != '' :
                 configuration.set_strvalue(key,line)
     configuration.save()
-        
+
 if __name__ == '__main__' :
     main()
 
