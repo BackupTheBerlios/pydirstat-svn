@@ -53,6 +53,19 @@ p.screenshot { text-align: center; font-weight: bold; top-margin: 5px; bottom-ma
 
     <img class='screenshot' src='http://developer.berlios.de/dbimage.php?id=1828' alt='HTML page of the result of pydirstat. The cursor is over the "red" square. It\'s easy to find big files. It\'s also easy to compare the size of the file with a dir several small files like "dark-blue" ones. '/>
     <p class='screenshot'>HTML page of the result of pydirstat. The cursor is over the "red" square. It's easy to find big files. It's also easy to compare the size of the file with a dir several small files like "dark-blue" ones. </p>
-
+  <h2>Configuration</h2>
+    <p>You can now configure pydirstat. <b>pds-config.py</b> is provided to help creating configuration file. It will ask few questions, and will write configuration file.</p>
+    <p>In the configuration file, you will be able to change color associations.</p>
+    <p>First find the configuration file by launching <b>pds-config.py</b> and answering questions. At the end, the configuration filename will be prompted.</p>
+    <p>You'll find a section <b>options</b> containing your answers. And then you'll find several <b>type:...</b> sections. Those sections define the "type" associated to each file. A type is just a string like 'image' or 'sound'. Then there is the section <b>color</b> that define the color associated to a file type.</p>
+    <p>There is four <b>type:</b> section.</p>
+    <ul>
+    <li><b>type:extension</b> : Every file ending by this extension will have the associated type. This is case sensitive. Most of unix filenames will be recognized by this section.</li>
+    <li><b>type:extensionlower</b> : This is the same section exept that the exentension is lowercased (so 'asf' will match 'asf' and 'ASF'). Most of Windows filenames will be recognized by this section.</li>
+    <li><b>type:exactmatch</b> : The whole file should be equal to the key. Exemple : "core" file under unix.</li>
+    <li><b>type:contain</b> : The file contains the key. Exemple : ".so." to match linux libraries.</li>
+    </ul>
+    <p><b>Note for windows users:</b> If this is too complex, just edit the <b>type:extensionlower</b> and the <b>color</b> sections.</p>
+    <p><b>Note for unix users:</b> If this is too complex, just edit the <b>type:extension</b> and the <b>color</b> sections.</p>
 </body>
 </html>

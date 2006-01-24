@@ -1,11 +1,15 @@
 2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
 
+    * doc/index.html : Documentation update
+
+2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
+
     * src/dirstat/HTMLDumper.py : There as still a bug with non-ascii
     chars.
-    
+
     * src/dirstat/TreemapView.py : Cleaning for the data which are now
     in the configuration file/system
-    
+
     * src/dirstat/Configuration.py : Correction of a bug that make
     color structures unavailable if you don't have a config file.
 

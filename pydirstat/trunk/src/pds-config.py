@@ -14,6 +14,8 @@ def main() :
             if line != '' :
                 configuration.set_strvalue(key,line)
     configuration.save()
+    print "The file %s has been created. Press RETURN to continue." % (configuration.get_filename(),)
+    sys.stdin.readline()
 
 if __name__ == '__main__' :
     main()

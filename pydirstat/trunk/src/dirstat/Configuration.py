@@ -152,21 +152,24 @@ othersections = {
         '_'         : 'purple',
         },
     }
-    
-    
+
+
 class _Configuration (object) :
     def __init__(self,load=True) :
         self._schema = schema
         self._strvalues = {}
         self._values = {}
         self._othersections = {}
+        self._filename = None
         if load :
             self.load()
 
-    def _get_filename(self,filename=None) :
+    def get_filename(self,filename=None) :
         if filename == None :
             home = os.path.expanduser('~')
             filename = os.path.join(home,CONFIGURATION_NAME)
+        elif self._filename != None :
+            filename = self._filename
         return filename
 
     def _get_value_from_strvalue(self,key,strvalue) :
@@ -176,10 +179,11 @@ class _Configuration (object) :
         return "%s" % (value,)
 
     def load(self,filename=None) :
-        filename = self._get_filename(filename)
+        filename = self.get_filename(filename)
         if os.path.isfile(filename) :
+            self._filename = filename
             handle = open(filename,'rt')
-            
+
             mode = ''
             for line in handle :
                 line = line.replace('\r','').replace('\n','')
@@ -205,14 +209,15 @@ class _Configuration (object) :
                     self._othersections[section][key] = othersections[section][key]
 
     def save(self,filename=None) :
-        filename = self._get_filename(filename)
+        filename = self.get_filename(filename)
         handle = open(filename,'wt')
+        self._filename = filename
         handle.write("[options]\n")
         for key in self._schema :
-            if ('nosave' not in self._schema[key]) or not(self._schema[key]['nosave']) : 
+            if ('nosave' not in self._schema[key]) or not(self._schema[key]['nosave']) :
                 if key in self._strvalues :
                     handle.write("%s=%s\n" % (key,self._strvalues[key]))
-                else :            
+                else :
                     handle.write("%s=%s\n" % (key,self._schema[key].get('default','')))
         sections = self.get_sections()
         sections.sort()
@@ -225,7 +230,7 @@ class _Configuration (object) :
                 section_content_keys.sort()
                 for key in section_content_keys :
                     handle.write("%s=%s\n" % (key,section_content[key]))
-                    
+
         handle.write("\n")
         handle.close()
 
@@ -233,14 +238,14 @@ class _Configuration (object) :
         for key in self._schema :
             if key in self._strvalues :
                 print "%s=%s" % (key,self._values[key])
-            else :            
+            else :
                 print "%s=%s" % (key,self._schema[key].get('default',''))
 
     def get_value(self,key) :
         if key in self._schema :
             if key in self._values :
                 return self._values[key]
-            else :      
+            else :
                 self._strvalues[key] = self._schema[key].get('default','')
                 self._values[key] = self._get_value_from_strvalue(key,self._strvalues[key])
                 return self._values[key]
@@ -251,7 +256,7 @@ class _Configuration (object) :
         if key in self._schema :
             if key in self._strvalues :
                 return self._strvalues[key]
-            else :      
+            else :
                 self._strvalues[key] = self._schema[key].get('default','')
                 self._values[key] = self._get_value_from_strvalue(key,self._strvalues[key])
                 return self._strvalues[key]
@@ -291,37 +296,36 @@ class _Configuration (object) :
         if ('nosave' in self._schema[key]) and self._schema[key]['nosave'] :
             need = False
         return need
-   
+
     def get_sections(self) :
         return self._othersections.keys()
-   
+
     def get_section(self,section) :
         if section in self._othersections :
             return self._othersections[section]
         return None
-   
+
     def set_othersection_item(self,section,key,value) :
         if section not in self._othersections :
             self._othersections[section] = {}
         self._othersections[section][key] = value
-   
+
 class Configuration (object) :
     _borg_element = _Configuration()
     def __getattribute__(self,name) :
         return object.__getattribute__(self,'_borg_element').__getattribute__(name)
     def __iter__(self) :
         return object.__getattribute__(self,'_borg_element').__getattribute__('__iter__')()
-    
+
 def test() :
     c=Configuration()
     c.load()
     c.show()
     d=Configuration()
-    
+
     d.set_value('width',c.get_value('width')+10)
     c.save()
     c.show()
-    
+
 if __name__ == '__main__' :
     test()
-    
