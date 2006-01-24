@@ -6,7 +6,7 @@
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
 !define PRODUCT_PYTHON_NAME "pdshtml"
 !define PRODUCT_PYTHON_NAME_CONFIG "pds-config"
-!define PRODUCT_VERSION "0.9.10-pre"
+!define PRODUCT_VERSION "0.9.10"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
