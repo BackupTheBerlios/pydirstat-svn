@@ -164,7 +164,10 @@ document.write('<div id="tooltip" class="tooltip"></div>');
     def addrect(self,**kwargs) :
         filename = kwargs['filename'].replace('\\','\\\\').replace('\'','&apos;').replace('\"','&quot;').replace('&','&amp;')
         if type(filename) != type(u'') :
-            filename = filename.decode('utf8','replace')
+            try :
+                filename = filename.decode('utf8','replace')
+            except LookupError :
+                pass
         filename = filename.encode('iso-8859-1','replace');
         kwargs['filename'] = filename
         kwargs['colorx'] = kwargs['color'].get_htmlcolor_extended(lambda x:int(x*0.6))
