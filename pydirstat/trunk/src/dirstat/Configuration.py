@@ -2,6 +2,7 @@
 # -*- coding : iso-8859-1 -*-
 
 import os
+import sys
 
 CONFIGURATION_NAME = '.pydirstat.ini'
 
@@ -240,6 +241,28 @@ class _Configuration (object) :
     def get_filename(self,filename=None) :
         if filename == None :
             home = os.path.expanduser('~')
+            if not os.path.isdir(home) :
+                # Now, we're not on unix-like environnement, nor under Win NT/2k/XP, look like Win9x !!!!
+                paths_to_test = []
+                if 'HOME' in os.environ :
+                    paths_to_test.append(os.environ['HOME'])
+                if len(sys.argv) >= 1 :
+                    exe_path = os.path.split(sys.argv[0])[0]
+                    if exe_path == '' :
+                        exe_path = '.'
+                    paths_to_test.append(exe_path)
+                # We're desperate, we didn't find neither somathing looking like a "home" so we try to save config files in tmp dir !!!
+                if 'TEMP' in os.environ :
+                    paths_to_test.append(os.environ['TEMP'])
+                # We're desperate, we didn't find neither somathing looking like a "home" so we try to save config files in tmp dir !!!
+                if 'TMP' in os.environ :
+                    paths_to_test.append(os.environ['TMP'])
+                # As an ultimate try, we'll store this in C:\ !!! At least Win 95 have it (yes, that's Win 95 who is bothering me !)
+                paths_to_test.append(os.environ['TMP'])
+                for path in paths_to_test :
+                    if os.path.isdir(path) :
+                        home = path
+                        break
             filename = os.path.join(home,CONFIGURATION_NAME)
         elif self._filename != None :
             filename = self._filename
