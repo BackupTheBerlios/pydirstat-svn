@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from Dumper import FileDumper
+from dirstat.Dumper import FileDumper
 from ming import *
 
-class MingDumper( FileDumper ) :
+class Dumper( FileDumper ) :
     EXT='.swf'
     NEEDHANDLE=False
 
@@ -19,7 +19,7 @@ class MingDumper( FileDumper ) :
         self._movie.setRate(12)
 
     def _end_dump(self) :
-        self._movie.save(self._filename)
+        self._movie.save(str(self._filename))
 
     def addrect(self,**kwargs) :
         squareshape=SWFShape()

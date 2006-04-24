@@ -15,6 +15,8 @@ schema = {
             'fr' : "Largeur du graphique en pixel",
             },
         'sortidx' : 0,
+        'needvalue' : True,
+        'cmdlinename' : 'WIDTH',
         },
     'height' : {
         'default' : '540',
@@ -25,6 +27,8 @@ schema = {
             'fr' : "Hauteur du graphique en pixel",
             },
         'sortidx' : 1,
+        'needvalue' : True,
+        'cmdlinename' : 'HEIGHT',
         },
     'basename' : {
         'default' : 'dirstat',
@@ -35,6 +39,8 @@ schema = {
             'fr' : "Base du nom du fichier final",
             },
         'sortidx' : 10,
+        'needvalue' : True,
+        'cmdlinename' : 'BASENAME',
         },
     'outputfile' : {
         'default' : '',
@@ -42,10 +48,77 @@ schema = {
         'minialias' : 'f',
         'nosave' : True,
         'doc' : {
-            'en' : "final filename",
+            'en' : "Final filename",
             'fr' : "Nom du fichier final",
             },
         'sortidx' : 100,
+        'needvalue' : True,
+        'cmdlinename' : 'FILE',
+        },
+    'path' : {
+        'default' : '',
+        'type' : str,
+        'minialias' : 'p',
+        'nosave' : True,
+        'doc' : {
+            'en' : "The path to analyse",
+            'fr' : "Le dossier a analyser",
+            },
+        'sortidx' : 100,
+        'needvalue' : True,
+        'cmdlinename' : 'PATH',
+        },
+    'help' : {
+        'default' : 0,
+        'type' : bool,
+        'minialias' : 'H',
+        'nosave' : True,
+        'doc' : {
+            'en' : "Show help",
+            'fr' : "Affiche l'aide",
+            },
+        'sortidx' : 999,
+        'needvalue' : False,
+        'cmdlinename' : 'HELP',
+        },
+    'config' : {
+        'default' : 0,
+        'type' : bool,
+        'minialias' : 'c',
+        'nosave' : True,
+        'doc' : {
+            'en' : "Start configuration mode",
+            'fr' : "Lance le mode configuration",
+            },
+        'sortidx' : 200,
+        'needvalue' : False,
+        'cmdlinename' : 'CFG',
+        },
+    'dumper' : {
+        'default' : 'HTML',
+        'type' : str,
+        'minialias' : 'd',
+        'nosave' : False,
+        'doc' : {
+            'en' : "Dumper used",
+            'fr' : "Generateur a utiliser",
+            },
+        'sortidx' : 50,
+        'needvalue' : True,
+        'cmdlinename' : 'DUMPER',
+        },
+    'pluginpath' : {
+        'default' : '',
+        'type' : str,
+        'minialias' : 'P',
+        'nosave' : False,
+        'doc' : {
+            'en' : "Path to plugins",
+            'fr' : "Chemin des plugins",
+            },
+        'sortidx' : 100,
+        'needvalue' : True,
+        'cmdlinename' : 'PPATH',
         },
     }
 
@@ -173,9 +246,18 @@ class _Configuration (object) :
         return filename
 
     def _get_value_from_strvalue(self,key,strvalue) :
-        return self._schema[key].get('type',str)(strvalue)
+        keytype = self._schema[key].get('type',str)
+        functable = {
+            bool : lambda x:str(x).lower() not in ('0','','False')
+            }
+        if keytype in functable :
+            return functable[keytype](strvalue)
+        return keytype(strvalue)
 
     def _get_strvalue_from_value(self,key,value) :
+        keytype = self._schema[key].get('type',str)
+        if keytype in functable :
+            return functable[keytype](value)
         return "%s" % (value,)
 
     def load(self,filename=None) :

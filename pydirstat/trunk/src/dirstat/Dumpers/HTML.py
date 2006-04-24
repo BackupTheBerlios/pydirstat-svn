@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from Dumper import FileDumper
+from dirstat.Dumper import FileDumper
 
-class HTMLDumper( FileDumper ) :
+class Dumper( FileDumper ) :
     EXT='.html'
 
     def _start_dump(self) :

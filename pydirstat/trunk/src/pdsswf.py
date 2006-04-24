@@ -1,20 +1,12 @@
 #!/usr/bin/env python
 
-from dirstat.MingDumper import MingDumper as Dumper
-from dirstat.SimuQT import Size
-import sys
-import encodings
+from dirstat.Configuration import Configuration
+import dirstat
 
-def main(path=None,gsize=None,outputfile=None) :
-    if len(sys.argv)>=2 :
-        path = sys.argv[1]
-    if len(sys.argv)>=4 :
-        gsize = Size(int(sys.argv[2]),int(sys.argv[3]))
-    if len(sys.argv)>=5 :
-        outputfile = sys.argv[4]
-
-    Dumper(path,outputfile).dump(gsize)
+def main() :
+    Configuration().set_strvalue('dumper','Ming')
+    dirstat.main()
 
 if __name__ == '__main__' :
-    main('.')
+    main()
 

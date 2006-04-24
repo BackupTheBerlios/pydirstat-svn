@@ -14,12 +14,18 @@ if len(sys.argv) == 1 :
 # )
 
 setup(
-    name='pdshtml',
-    console=['pdshtml.py','pds-config.py'],
+    name='pydirstat',
+    console=['pydirstat.py','pds-config.py','pdshtml.py'],
     icon='../res/pydirstat.ico',
     options={
         "py2exe" : {
-            "includes" : ["encodings","encodings.latin_1",],
+            "includes" : [
+                'encodings',
+                'encodings.latin_1',
+                'dirstat.Dumpers.HTML',
+                'dirstat.Dumpers.SVG',
+                'dirstat.Dumpers.Ming',
+                ],
             "excludes": [],
             }
         }

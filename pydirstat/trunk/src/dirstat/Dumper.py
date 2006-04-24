@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from FileInfo import FileTree
-from Configuration import Configuration 
+from Configuration import Configuration
 from TreemapView import TreemapView
 import os
 from SimuQT import Size
@@ -13,6 +13,10 @@ class FileDumper( object ) :
         self._configuration = configuration
         if self._configuration == None :
             self._configuration = Configuration()
+
+        if rootpath == None and self._configuration.get_value('path') != '' :
+            rootpath = self._configuration.get_value('path')
+
         # Gruik Gruik : C:" -> C:\ Thanks Windows !
         if rootpath and (len(rootpath)==3) and (rootpath[2]) == '"' :
             rootpath = rootpath[0:2] + '\\'
@@ -27,7 +31,7 @@ class FileDumper( object ) :
             tree.scan()
 
         self._tree = tree
-        filename = outputfile 
+        filename = outputfile
         if filename == None :
             filename = self._configuration.get_value('outputfile')
         if filename == '' :

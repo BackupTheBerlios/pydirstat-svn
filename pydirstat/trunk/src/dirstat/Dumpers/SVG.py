@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from Dumper import FileDumper
+from dirstat.Dumper import FileDumper
 
-class XMLDumper( FileDumper ) :
+class Dumper( FileDumper ) :
     EXT='.svg'
 
     def _start_dump(self) :

@@ -4,9 +4,9 @@
 !define PRODUCT_NAME "pyDirStat"
 !define PRODUCT_PUBLISHER "pyDirStat Developpement team"
 !define PRODUCT_WEB_SITE "http://pydirstat.berlios.de/"
-!define PRODUCT_PYTHON_NAME "pdshtml"
+!define PRODUCT_PYTHON_NAME "pydirstat"
 !define PRODUCT_PYTHON_NAME_CONFIG "pds-config"
-!define PRODUCT_VERSION "0.9.10"
+!define PRODUCT_VERSION "0.9.11"
 !define PRODUCT_ROOT_KEY "HKCU"
 !define PRODUCT_PATH_KEY "Software\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "${PRODUCT_ROOT_KEY}"
@@ -92,6 +92,13 @@ Section "Main" SecMain
     File /r "..\src\dist\*"
     File "..\res\msvcr71.dll"
     File "..\res\pydirstat.ico"
+
+    CreateDirectory "$INSTDIR\dirstat"
+    CreateDirectory "$INSTDIR\dirstat\Dumpers"
+
+    SetOutPath "$INSTDIR\dirstat\Dumpers"
+
+    File /r "..\src\build\bdist.win32\winexe\collect\dirstat\Dumpers\*"
 
     WriteRegStr "${PRODUCT_ROOT_KEY}" "${PRODUCT_PATH_KEY}" "Install_dir" $INSTDIR
     WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME_VERSION})"
