@@ -44,7 +44,7 @@ def main() :
                 pluginpath.append(os.path.join(pathname,pluginsubpath))
             try :
                 modulename = dumpername
-                print (modulename,pluginpath)
+                #print (modulename,pluginpath)
                 moduleinfo = imp.find_module(modulename,pluginpath)
                 #print (moduleinfo,)
                 module = imp.load_module(modulename,*moduleinfo)
