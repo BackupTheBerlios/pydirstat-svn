@@ -1,3 +1,25 @@
+2006-04-25  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.11
+
+2006-04-24  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * nsis/pydirstat.nsi, src/dirstat/Configuration.py,
+    src/dirstat/Dumper.py, src/dirstat/__init__.py,
+    src/pds-config.py, src/pdshtml.py, src/pdssvg.py,
+    src/pdsswf.py, src/wsetup.py : Huge refactoring
+    to support pluggins
+
+    * src/dirstat/CommandLine.py : Command line handling
+
+    * src/dirstat/Dumpers, src/dirstat/Dumpers/HTML.py,
+    src/dirstat/Dumpers/Ming.py, src/dirstat/Dumpers/SVG.py,
+    src/dirstat/Dumpers/__init__.py : New pluggins created
+    from the old "Dumpers" classes
+
+    * src/dirstat/HTMLDumper.py, src/dirstat/MingDumper.py
+    src/dirstat/XMLDumper.py : Removed in favor of pluggins
+
 2006-01-24  Gissehel <gissehel-pds@giss.mine.nu>
 
     * doc/index.html : Documentation update
