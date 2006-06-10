@@ -176,7 +176,7 @@ document.write('<div id="tooltip" class="tooltip"></div>');
         self._file.write('''<span class='rect' onMouseOver='fileinfo(this,"%(filename)s","%(filesize)s")' onMouseOut='fileout(this)' style='left:%(x)dpx;top:%(y)dpx;width:%(width)dpx;height:%(height)dpx;background-color:%(color)s;border-color:%(colorx)s' /></span>\n''' % kwargs)
 
 def test():
-    HTMLDumper().dump()
+    Dumper().dump()
 
 if __name__ == '__main__' :
     test()

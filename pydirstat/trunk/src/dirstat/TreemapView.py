@@ -389,12 +389,8 @@ class TreemapTile( object ) :
         # setPen( NoPen );
         pass
 
-def test():
-    from XMLDumper import test
-    test()
-
 if __name__ == '__main__' :
-    test()
+    pass
 
 
 

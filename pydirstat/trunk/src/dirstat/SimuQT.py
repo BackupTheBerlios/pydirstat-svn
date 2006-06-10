@@ -236,7 +236,7 @@ class Color( object ):
                     if len(listcolor) == 6 :
                         (self._r, self._g, self._b) = (listcolor[0]*0x10+listcolor[1],listcolor[2]*0x10+listcolor[3],listcolor[4]*0x10+listcolor[5])
                         colok_ok = True
-                            
+
                 if not(colok_ok) :
                     (self._r, self._g, self._b) = (0x33, 0x33, 0x33)
     def get_svgcolor( self ):

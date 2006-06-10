@@ -44,7 +44,7 @@ class Dumper( FileDumper ) :
         i.moveTo(0,0)
 
 def test():
-    MingDumper().dump()
+    Dumper().dump()
 
 if __name__ == '__main__' :
     test()

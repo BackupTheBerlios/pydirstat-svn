@@ -104,7 +104,7 @@ class Dumper( FileDumper ) :
         self._file.write('''        <rect x="%(x)d" y="%(y)d" height="%(height)d" width="%(width)d" onmouseover="setFileAttr(evt,'%(filename)s','%(filesize)s')" onmouseout="hideFileAttr(evt)" fill="%(color)s"/>\n''' % kwargs)
 
 def test():
-    XMLDumper().dump()
+    Dumper().dump()
 
 if __name__ == '__main__' :
     test()
