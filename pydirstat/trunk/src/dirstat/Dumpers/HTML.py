@@ -8,6 +8,8 @@ class Dumper( FileDumper ) :
     def _start_dump(self) :
         header='''<html>
 <head>
+<!-- IE stuff for security zone -->
+<!-- saved from url=(0014)about:internet -->
 <title>Repertoire </title>
 <script language='javascript'>
 <!--
