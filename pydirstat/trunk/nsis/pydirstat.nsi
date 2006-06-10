@@ -89,7 +89,7 @@ ShowUnInstDetails show
 Section "Main" SecMain
     SetOutPath "$INSTDIR"
 
-    File /r "..\src\dist\*"
+    File /r "..\dist\*"
     File "..\res\msvcr71.dll"
     File "..\res\pydirstat.ico"
 
@@ -98,7 +98,7 @@ Section "Main" SecMain
 
     SetOutPath "$INSTDIR\dirstat\Dumpers"
 
-    File /r "..\src\build\bdist.win32\winexe\collect\dirstat\Dumpers\*"
+    File /r "..\build\bdist.win32\winexe\collect\dirstat\Dumpers\*"
 
     WriteRegStr "${PRODUCT_ROOT_KEY}" "${PRODUCT_PATH_KEY}" "Install_dir" $INSTDIR
     WriteRegStr HKCR "Folder\shell\${PRODUCT_NAME}" "" "Draw files size (${PRODUCT_NAME_VERSION})"
