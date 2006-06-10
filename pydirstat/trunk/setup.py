@@ -68,7 +68,6 @@ It's a perfect tool to view disk usage with graphics."""
 author = "Arthibus Gissehel"
 author_email = "public-pds-setup@giss.ath.cx"
 url="http://pydirstat.berlios.de/"
-license = "GPL"
 classifiers=[
     'Development Status :: 4 - Beta',
     'Environment :: Console',
@@ -153,10 +152,10 @@ def main():
            name = pkgname,
            version = version,
            description = description,
+           long_description = long_description,
            author = author,
            author_email = author_email,
            url=url,
-           license = license,
            classifiers = classifiers,
 
            #---scripts,modules and packages---
