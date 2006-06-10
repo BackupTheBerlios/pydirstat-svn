@@ -105,7 +105,7 @@ ext_modules=[]
 #           library_dirs=[''],
 #           libraries=[''],)
 #    ]
-
+zip_safe = False
 options={}
 extra_parameters = {}
 #===py2exe==========================
@@ -165,6 +165,10 @@ def main():
            packages = packages,
            ext_modules = ext_modules,
 
+           #---egg params---
+           zip_safe = zip_safe,
+           
+           #---other---
            options = options,
            **extra_parameters
            )
