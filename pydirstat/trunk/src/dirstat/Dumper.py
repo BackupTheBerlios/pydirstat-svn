@@ -100,13 +100,16 @@ class FileDumper( object ) :
                     colors[color] = Color(colors_conf[color])
 
         types.sort()
-        types.append('_')
+        if 'file' not in types :
+            types.append('file')
+        if 'dir' not in types :
+            types.append('dir')
+        if '_' not in types :
+            types.append('_')
+
         for typename in types :
             if typename not in colors :
                 colors[typename] = colors['_']
-
-        colors['Directory'] = Color('white')
-        method_by_type['Directory'] = {}
 
         return types,colors,method_by_type
 

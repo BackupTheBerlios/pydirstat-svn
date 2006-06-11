@@ -267,6 +267,14 @@ class Dumper( FileDumper ) :
                         filelisting.append(mask)
             filelisting.sort()
             kwargs['filename'] = ", ".join(filelisting)
+            if typename=='file' :
+                if len(filelisting) > 0 :
+                    kwargs['filename'] += ' and '
+                kwargs['filename'] += 'any other file'
+            if typename=='dir' :
+                if len(filelisting) > 0 :
+                    kwargs['filename'] += ' and '
+                kwargs['filename'] += 'any directory'
             self.addrect(**kwargs)
 
             ypos += height
