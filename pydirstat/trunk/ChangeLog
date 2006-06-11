@@ -1,6 +1,10 @@
 2006-06-10  Gissehel <gissehel-pds@giss.mine.nu>
 
-    * pysirstat 0.9.12
+    * makerelease.py : This script can now create version files, tag and make
+    dist files (but it's still ugly)
+
+    * ChangeLog, src/dirstat/__init__.py, src/dirstat/CommandLine.py,
+    src/dirstat/Configuration.py : Adding -v --version to show the version
 
     * src/wsetup.py, setup.py,
     nsis/pydirstat.nsi : Adding a true setup.py
@@ -9,17 +13,17 @@
     src/dirstat/__version__.py,
     nsis/pydirstat.nsi,
     VERSION,
-    makerelease.py : Versions are now 
+    makerelease.py : Versions are now
     stored in VERSION and makerelease.py
     put it everywhere needed.
 
     * ez_setup/ : Adding ez_setup to the distribution in order to use egg
 
     * src/dirstat/Dumpers/HTML.py,
-    src/dirstat/Dumpers/Ming.py 
+    src/dirstat/Dumpers/Ming.py
     src/dirstat/Dumpers/SVG.py
     src/dirstat/SimuQT.py
-    src/dirstat/TreemapView.py : 
+    src/dirstat/TreemapView.py :
     Removing some old test/debug code.
 
     * src/dirstat/Dumpers/HTML.py : Adding a line for IE to handle

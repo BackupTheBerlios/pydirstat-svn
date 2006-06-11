@@ -82,6 +82,7 @@ classifiers=[
     'Topic :: System :: Filesystems',
     'Topic :: System :: Systems Administration',
     ]
+download_url='http://developer.berlios.de/project/showfiles.php?group_id=3108'
 
 scripts=[
     'src/pds-config.py',
@@ -157,6 +158,7 @@ def main():
            author_email = author_email,
            url=url,
            classifiers = classifiers,
+           download_url=download_url,
 
            #---scripts,modules and packages---
            scripts=scripts,
@@ -167,7 +169,7 @@ def main():
 
            #---egg params---
            zip_safe = zip_safe,
-           
+
            #---other---
            options = options,
            **extra_parameters

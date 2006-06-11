@@ -82,6 +82,19 @@ schema = {
         'needvalue' : False,
         'cmdlinename' : 'HELP',
         },
+    'version' : {
+        'default' : 0,
+        'type' : bool,
+        'minialias' : 'v',
+        'nosave' : True,
+        'doc' : {
+            'en' : "Show version",
+            'fr' : "Affiche le numero de version",
+            },
+        'sortidx' : 999,
+        'needvalue' : False,
+        'cmdlinename' : 'VERSION',
+        },
     'config' : {
         'default' : 0,
         'type' : bool,

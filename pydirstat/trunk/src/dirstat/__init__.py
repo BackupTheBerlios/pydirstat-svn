@@ -54,7 +54,9 @@ def main() :
             except ImportError :
                 raise ParseError('Dumper %s cannot be loaded' % (dumpername,))
         elif action == CommandLine.ACTION_USAGE :
-            print commandline.get_usage()
+            print commandline.get_usage(),
+        elif action == CommandLine.ACTION_VERSION :
+            print commandline.get_version_text(),
         elif action == CommandLine.ACTION_CONFIG :
             config()
     except (ParseError,ValueError), e :

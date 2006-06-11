@@ -4,6 +4,7 @@
 from Configuration import Configuration
 from Configuration import schema
 import os
+from __version__ import __version__
 
 schema_default = ['path','width','height','outputfile']
 
@@ -15,6 +16,7 @@ class CommandLine(object) :
     ACTION_DUMP = 1
     ACTION_USAGE = 2
     ACTION_CONFIG = 3
+    ACTION_VERSION = 4
 
     def __init__(self,commandline) :
         self._commandline = commandline
@@ -83,9 +85,12 @@ class CommandLine(object) :
             raise ParseError('need value for parameter %s' % (remaining_args_to_parse[0],))
         if configuration.get_value('help') != 0 :
             return self.ACTION_USAGE
+        if configuration.get_value('version') != 0 :
+            return self.ACTION_VERSION
         if configuration.get_value('config') != 0 :
             return self.ACTION_CONFIG
         return self.ACTION_DUMP
+
     def get_usage(self) :
         configuration = Configuration()
         usage = '%s [OPTION]...' % (os.path.basename(self._commandline[0]),)
@@ -112,8 +117,12 @@ class CommandLine(object) :
             partline += '%s\n' % (schema[key]['doc']['en'],)
             usage += partline
             str
-        usage += '\n'
+        # usage += '\n'
         return usage
+
+    def get_version_text(self) :
+        output = '%s %s\n' % (os.path.basename(self._commandline[0]),__version__)
+        return output
 
 def test() :
     cl = CommandLine(['poide','KUUU','-fhw','88888','45','1','7'])
