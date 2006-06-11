@@ -1,4 +1,15 @@
+2006-06-11  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.13
+
+    * src/dirstat/Dumper.py, src/dirstat/Dumpers/HTML.py,
+    src/dirstat/SimuQT.py, src/dirstat/TreeMapView.py :
+    Adding meta informations for HTML output.
+    Adding legend for HTML output.
+
 2006-06-10  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * pysirstat 0.9.12
 
     * makerelease.py : This script can now create version files, tag and make
     dist files (but it's still ugly)

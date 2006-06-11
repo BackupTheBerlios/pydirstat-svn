@@ -2,11 +2,7 @@
 
 from dirstat.Dumper import FileDumper
 
-class Dumper( FileDumper ) :
-    EXT='.html'
-
-    def _start_dump(self) :
-        header='''<html>
+HEADER='''<html>
 <head>
 <!-- IE stuff for security zone -->
 <!-- saved from url=(0014)about:internet -->
@@ -83,6 +79,20 @@ function getPosition(p){
 }
 // document.onmousemove = getPosition;
 document.write('<div id="tooltip" class="tooltip"></div>');
+var swappanelstatus = 0;
+function swappanel() {
+    if (swappanelstatus==0)
+    {
+        document.getElementById("panelinfo").style.visibility = "hidden";
+        document.getElementById("panellegend").style.visibility = "visible";
+    }
+    else
+    {
+        document.getElementById("panellegend").style.visibility = "hidden";
+        document.getElementById("panelinfo").style.visibility = "visible";
+    }
+    swappanelstatus = 1-swappanelstatus;
+}
 -->
 </script>
 <style type='text/css'>
@@ -116,7 +126,15 @@ document.write('<div id="tooltip" class="tooltip"></div>');
   border-style:solid;
   border-width:1px;
   margin : solid 0 #fff;
+
+  font-weight:bold;
+  text-align:center;
+  font-family:Verdana,Arial,Lucida,Sans-Serif;
+  font-size:11px;
+  white-space: nowrap;
+  overflow: visible;
 }
+.paneltexte ,
 .panel {
   position:absolute;
   left:5;
@@ -128,6 +146,26 @@ document.write('<div id="tooltip" class="tooltip"></div>');
   border-style:solid;
   border-width:1px;
   margin : solid 0 #fff;
+}
+#panelinfo {
+  visibility : visible;
+}
+#panellegend {
+  visibility : hidden;
+}
+#panelmetadata {
+  left:5;
+  top:5;
+  width:%(sizexmd)s;
+  height:%(sizeymd)s;
+
+  margin : solid 1 #fff;
+  margin:0;
+  padding: 5px;
+}
+#panelmetadata p {
+  font-family:Verdana,Arial,Lucida,Sans-Serif;
+  font-size:11px;
 }
 #filename {
   padding-left: 10px;
@@ -145,23 +183,102 @@ document.write('<div id="tooltip" class="tooltip"></div>');
 </style>
 </head>
 <body>
-<span class='info'>
+<span class='info' onclick='javascript:swappanel()'>
 <span id='filename'></span><br />
 <span id='filesize'></span>
 </span>
-<span class='panel'>
+<span class='panel' id='panelinfo'>
 '''
-        size = self._tmv.visibleSize()
-        self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
 
-    def _end_dump(self) :
-        footer='''
+FOOTER_PART1='''
 </span>
+
+<span class='panel' id='panellegend'>
+<span class='paneltexte' id='panelmetadata'>
+'''
+FOOTER_PART2='''
+</span>
+'''
+FOOTER_PART3='''
+</span>
+
 </body>
 </html>
 '''
+
+class Dumper( FileDumper ) :
+    EXT='.html'
+
+    def _start_dump(self) :
         size = self._tmv.visibleSize()
-        self._file.write(footer % {'sizex':size.x(),'sizey':size.y()})
+        self.__dump_params = {'sizex':size.x(),'sizey':size.y(),'sizexmd':size.x()/2-20,'sizeymd':size.y()-20}
+
+        header=HEADER
+        self._file.write(header % self.__dump_params)
+
+    def _end_dump(self) :
+        footer=FOOTER_PART1
+        self._file.write(footer % self.__dump_params)
+
+        params = {'Generator' : 'pydirstat','Version':'0.9.12'}
+        for param in self.get_metadata() :
+            self._file.write('<p><b>%s</b> : %s</p>\n' % (param[0],param[1]))
+
+        footer=FOOTER_PART2
+        self._file.write(footer % self.__dump_params)
+
+        #--------------------------------------------------
+        # legend
+        #--------------------------------------------------
+
+        types,colors,method_by_type = self.get_colors()
+
+        border = 5
+        if self.__dump_params['sizey'] < border*2*len(types)*1.3 :
+            border = 0
+        height=int( (self.__dump_params['sizey']-border*2.0*len(types))/len(types) )
+
+        ypos=border
+        for typename in types :
+            ypos
+            kwargs = {}
+            kwargs['innertext'] = (typename=='_') and 'Unknown' or typename
+            kwargs['x'] = int(self.__dump_params['sizex']/2+5)
+            kwargs['width'] = int(self.__dump_params['sizex']/2-10)
+            kwargs['y'] = ypos
+            kwargs['height'] = height-2*border
+            kwargs['filename'] = ''
+            kwargs['filesize'] = ''
+            kwargs['color'] = colors[typename]
+
+            filelisting = []
+            if typename in method_by_type :
+                if 'type:extension' in method_by_type[typename] :
+                    for mask in method_by_type[typename]['type:extension'] :
+                        filelisting.append('*.'+mask)
+                if 'type:extensionlower' in method_by_type[typename] :
+                    for mask in method_by_type[typename]['type:extensionlower'] :
+                        filelisting.append('*.'+mask)
+                if 'type:contain' in method_by_type[typename] :
+                    for mask in method_by_type[typename]['type:contain'] :
+                        filelisting.append('*'+mask+'*')
+                if 'type:exactmatch' in method_by_type[typename] :
+                    for mask in method_by_type[typename]['type:exactmatch'] :
+                        filelisting.append(mask)
+            filelisting.sort()
+            kwargs['filename'] = ", ".join(filelisting)
+            self.addrect(**kwargs)
+
+            ypos += height
+
+        #--------------------------------------------------
+        # legend (end)
+        #--------------------------------------------------
+
+        footer=FOOTER_PART3
+        self._file.write(footer % self.__dump_params)
+
+
 
     def addrect(self,**kwargs) :
         filename = kwargs['filename'].replace('\\','\\\\').replace('\'','&apos;').replace('\"','&quot;').replace('&','&amp;')
@@ -173,7 +290,16 @@ document.write('<div id="tooltip" class="tooltip"></div>');
         filename = filename.encode('iso-8859-1','replace');
         kwargs['filename'] = filename
         kwargs['colorx'] = kwargs['color'].get_htmlcolor_extended(lambda x:int(x*0.6))
-        self._file.write('''<span class='rect' onMouseOver='fileinfo(this,"%(filename)s","%(filesize)s")' onMouseOut='fileout(this)' style='left:%(x)dpx;top:%(y)dpx;width:%(width)dpx;height:%(height)dpx;background-color:%(color)s;border-color:%(colorx)s' /></span>\n''' % kwargs)
+
+        color = kwargs['color'].get_rgb()
+        if color[0]+color[1]+color[2] > 3*128 :
+            kwargs['colort'] = kwargs['color'].__class__(0,0,0)
+        else :
+            kwargs['colort'] = kwargs['color'].__class__(255,255,255)
+
+        if 'innertext' not in kwargs :
+            kwargs['innertext'] = ''
+        self._file.write('''<span class='rect' onMouseOver='fileinfo(this,"%(filename)s","%(filesize)s")' onMouseOut='fileout(this)' style='left:%(x)dpx;top:%(y)dpx;width:%(width)dpx;height:%(height)dpx;background-color:%(color)s;border-color:%(colorx)s;color:%(colort)s' />%(innertext)s</span>\n''' % kwargs)
 
 def test():
     Dumper().dump()

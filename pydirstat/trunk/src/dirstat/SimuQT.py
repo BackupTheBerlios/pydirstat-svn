@@ -264,6 +264,16 @@ class Canvas( object ):
     def resize( self, width, height ) :
         self._size = Size(width, height)
 
+def fmtsize(size) :
+    size = "%d" % (size,)
+    newsize = ""
+    while len(size) > 0 :
+        if newsize != "" :
+            newsize = " " + newsize
+        newsize = size[-3:] + newsize
+        size = size[:-3]
+    return newsize
+
 def test():
     r = Point(7,4)
     s = Size(100,600)

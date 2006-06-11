@@ -11,6 +11,7 @@ UpdateMinSize               = 2
 from FileInfo import FileInfoList, FileInfoListRow
 
 from SimuQT import Size, Point, Rect, Color, Canvas
+from SimuQT import fmtsize
 import os
 
 class TreemapView( object ):
@@ -340,16 +341,6 @@ class TreemapTile( object ) :
 
         if size.height() < 1 or size.width() < 1 :
             return
-
-        def fmtsize(size) :
-            size = "%d" % (size,)
-            newsize = ""
-            while len(size) > 0 :
-                if newsize != "" :
-                    newsize = " " + newsize
-                newsize = size[-3:] + newsize
-                size = size[:-3]
-            return newsize
 
         def iconv(name) :
             result = ""
