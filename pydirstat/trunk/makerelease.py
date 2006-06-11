@@ -34,7 +34,7 @@ scriptargs = {
 def create_tag():
     commands = [
         'svn up',
-        'svn cp -m "Release %(version)s" . %(public_repository)s/tags/%(version)s' % scriptargs,
+        'svn cp -m "Release %(version)s" . %(repository)s/tags/%(version)s' % scriptargs,
         ]
 
     for command in commands :
