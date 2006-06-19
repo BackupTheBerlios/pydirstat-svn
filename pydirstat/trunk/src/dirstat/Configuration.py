@@ -140,6 +140,7 @@ othersections = {
     'type:extension' : {
         "~"         : 'tmp',
         "bak"       : 'tmp',
+        "svn-base"  : 'tmp',
 
         "c"         : 'dev',
         "cpp"       : 'dev',
@@ -224,7 +225,7 @@ othersections = {
         },
 
     'color' : {
-        'tmp'       : 'red',
+        'tmp'       : 'orange',
         'dev'       : 'slateblue',
         'document'  : 'blue',
         'compiled'  : 'darkblue',

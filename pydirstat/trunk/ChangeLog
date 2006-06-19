@@ -1,5 +1,8 @@
 2006-06-19  Gissehel <gissehel-pds@giss.mine.nu>
 
+    * src/dirstat/Configuration.py : default configuration : svn-base is now
+    consided as a tmp file, and tmp file are now orange and not red.
+
     * src/dirstat/CommandLine.py, src/dirstat/Configuration.py,
     src/dirstat/DirInfo.py, src/dirstat/Dumper.py, src/dirstat/Dumpers,
     src/dirstat/FileInfo.py, src/dirstat/FileInfoList.py,
