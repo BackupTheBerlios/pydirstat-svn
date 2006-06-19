@@ -83,7 +83,7 @@ class Dumper( FileDumper ) :
         }
     </script>
     <g style="stroke:black; stroke-width:1px">\n'''
-        size = self._tmv.visibleSize()
+        size = self.get_size()
         self._file.write(header % {'sizex':size.x(),'sizey':size.y()})
 
 
@@ -96,7 +96,7 @@ class Dumper( FileDumper ) :
     <text y="%(sizey)d" x="10" id="filesize" style="visibility:hidden;fill:rgb(80,0,0);font-weight:normal; font-family:'Arial';font-size:13;text-anchor:left;pointer-events:none"> </text>
     </g>
 </svg>\n'''
-        size = self._tmv.visibleSize()
+        size = self.get_size()
         self._file.write(footer % {'sizex':size.x(),'sizey':size.y()})
 
     def addrect(self,**kwargs) :

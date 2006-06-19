@@ -210,7 +210,7 @@ class Dumper( FileDumper ) :
     EXT='.html'
 
     def _start_dump(self) :
-        size = self._tmv.visibleSize()
+        size = self.get_size()
         self.__dump_params = {'sizex':size.x(),'sizey':size.y(),'sizexmd':size.x()/2-20,'sizeymd':size.y()-20}
 
         header=HEADER

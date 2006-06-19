@@ -11,7 +11,7 @@ class Dumper( FileDumper ) :
         return colorname.get_rgb()
 
     def _start_dump(self) :
-        size = self._tmv.visibleSize()
+        size = self.get_size()
         self._movie = SWFMovie()
 
         self._movie.setDimension(self._size.x(),self._size.y())

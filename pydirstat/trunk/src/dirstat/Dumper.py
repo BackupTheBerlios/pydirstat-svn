@@ -118,6 +118,10 @@ class FileDumper( object ) :
 
         return types,colors,method_by_type
 
+    def get_size(self) :
+        """Return the size of the TreemapView"""
+        return self._treemapview.visibleSize()
+
     def _start_dump(self) :
         '''You should override this method. Called once before starting dump.'''
         pass
