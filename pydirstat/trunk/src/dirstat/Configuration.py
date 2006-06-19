@@ -141,6 +141,7 @@ othersections = {
         "~"         : 'tmp',
         "bak"       : 'tmp',
         "svn-base"  : 'tmp',
+        "svn-work"  : 'tmp',
 
         "c"         : 'dev',
         "cpp"       : 'dev',
@@ -222,6 +223,7 @@ othersections = {
 
     'type:exactmatch' : {
         "core"      : 'tmp',
+        "entries"   : 'tmp',
         },
 
     'color' : {
