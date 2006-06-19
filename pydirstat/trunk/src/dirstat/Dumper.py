@@ -3,7 +3,7 @@
 import os
 import time
 import sys
-from FileInfo import FileTree
+from FileTree import FileTree
 from Configuration import Configuration
 from TreemapView import TreemapView
 from __version__ import __version__
@@ -11,34 +11,37 @@ from SimuQT import Size,Color
 from SimuQT import fmtsize
 
 class FileDumper( object ) :
+    """This is the mother class of all dumpers. A dumper is a plugin that receive informations about a file and how to draw it. It usually dump a file, but you can do whatever you want with it."""
     EXT=".dump"
     NEEDHANDLE=True
-    def __init__(self, rootpath=None, outputfile=None, size=None, tree=None, configuration=None) :
-        self._configuration = configuration
-        if self._configuration == None :
-            self._configuration = Configuration()
+    def __init__(self, rootpath=None, outputfile=None) :
+        self._configuration = Configuration()
 
-        if rootpath == None and self._configuration.get_value('path') != '' :
+        if self._configuration.get_value('path') != '' :
             rootpath = self._configuration.get_value('path')
 
         # Gruik Gruik : C:" -> C:\ Thanks Windows !
         if rootpath and (len(rootpath)==3) and (rootpath[2]) == '"' :
             rootpath = rootpath[0:2] + '\\'
-        if (rootpath == None) and (tree==None) :
+
+        if rootpath == None :
             rootpath = '.'
-        if rootpath != None :
-            if os.path.supports_unicode_filenames :
-                rootpath = unicode(rootpath)
-            else :
-                rootpath = str(rootpath)
-            tree = FileTree(rootpath)
-            tree.scan()
+
+        if os.path.supports_unicode_filenames :
+            rootpath = unicode(rootpath)
+        else :
+            rootpath = str(rootpath)
+
+        tree = FileTree(rootpath)
+        tree.scan()
 
         self._rootpath = rootpath
         self._tree = tree
         filename = outputfile
+
         if filename == None :
             filename = self._configuration.get_value('outputfile')
+
         if filename == '' :
             if os.path.isdir(rootpath) :
                 filename = os.path.join(rootpath,self._configuration.get_value('basename')+self.EXT)
@@ -46,21 +49,22 @@ class FileDumper( object ) :
                 name = os.path.split(rootpath)[1]
                 filename = name + '.' + self._configuration.get_value('basename') + self.EXT
         self._filename = filename
-        self._size = size
+        self._size = None
 
     def dump(self,gsize=None) :
+        """This method really start the dump. You should not override it. Override _start_dump, _end_dump or add_rect instead."""
         if gsize != None :
             self._size = gsize
         if self._size == None :
             self._size = Size(self._configuration.get_value('width'),self._configuration.get_value('height'))
-        self._tmv = TreemapView( self._tree, self._size, self._configuration )
-        size = self._tmv.visibleSize()
+        self._treemapview = TreemapView( self._tree, self._size, self._configuration )
+        size = self._treemapview.visibleSize()
 
         if self.NEEDHANDLE :
             self._file = file(self._filename,'wt')
 
         self._start_dump()
-        self._tmv.draw(self)
+        self._treemapview.draw(self)
         self._end_dump()
 
         if self.NEEDHANDLE :
@@ -72,13 +76,14 @@ class FileDumper( object ) :
             ('Generator', 'pydirstat'),
             ('Version', __version__),
             ('Directory', os.path.abspath(self._rootpath)),
+            ('Total Size',fmtsize(self._treemapview.rootTile().fileinfo().totalSize())),
             ('Date', time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())),
             ('Configuration File',self._configuration.get_filename()),
-            ('Total Size',fmtsize(self._tmv.rootTile().orig().totalSize())),
             ('Python version',sys.version),
             ]
 
     def get_colors(self) :
+        '''This method may be called by plugin to print legend'''
         method_by_type = {}
         types = []
         colors = {}

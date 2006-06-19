@@ -242,7 +242,9 @@ othersections = {
 
 
 class _Configuration (object) :
+    """This class Handle configuration. It can serialize from/to a file. CommandLine can change this class content."""
     def __init__(self,load=True) :
+        """Constructor"""
         self._schema = schema
         self._strvalues = {}
         self._values = {}
@@ -252,6 +254,7 @@ class _Configuration (object) :
             self.load()
 
     def get_filename(self,filename=None) :
+        """Acces to the filename of the configuration file."""
         if filename == None :
             home = os.path.expanduser('~')
             if not os.path.isdir(home) :
@@ -271,7 +274,7 @@ class _Configuration (object) :
                 if 'TMP' in os.environ :
                     paths_to_test.append(os.environ['TMP'])
                 # As an ultimate try, we'll store this in C:\ !!! At least Win 95 have it (yes, that's Win 95 who is bothering me !)
-                paths_to_test.append(os.environ['TMP'])
+                paths_to_test.append("C:\\")
                 for path in paths_to_test :
                     if os.path.isdir(path) :
                         home = path
@@ -282,6 +285,7 @@ class _Configuration (object) :
         return filename
 
     def _get_value_from_strvalue(self,key,strvalue) :
+        """Convert string to the native format of the value."""
         keytype = self._schema[key].get('type',str)
         functable = {
             bool : lambda x:str(x).lower() not in ('0','','False')
@@ -291,12 +295,14 @@ class _Configuration (object) :
         return keytype(strvalue)
 
     def _get_strvalue_from_value(self,key,value) :
+        """Convert the native format of the value to string."""
         keytype = self._schema[key].get('type',str)
         if keytype in functable :
             return functable[keytype](value)
         return "%s" % (value,)
 
     def load(self,filename=None) :
+        """Load configuration from file."""
         filename = self.get_filename(filename)
         if os.path.isfile(filename) :
             self._filename = filename
@@ -327,6 +333,7 @@ class _Configuration (object) :
                     self._othersections[section][key] = othersections[section][key]
 
     def save(self,filename=None) :
+        """Save configuration to file."""
         filename = self.get_filename(filename)
         handle = open(filename,'wt')
         self._filename = filename
@@ -353,6 +360,7 @@ class _Configuration (object) :
         handle.close()
 
     def show(self) :
+        """Show configuration (debug)."""
         for key in self._schema :
             if key in self._strvalues :
                 print "%s=%s" % (key,self._values[key])
@@ -360,6 +368,7 @@ class _Configuration (object) :
                 print "%s=%s" % (key,self._schema[key].get('default',''))
 
     def get_value(self,key) :
+        """Get value for a key in native format."""
         if key in self._schema :
             if key in self._values :
                 return self._values[key]
@@ -371,6 +380,7 @@ class _Configuration (object) :
             return None
 
     def get_strvalue(self,key) :
+        """Get value for a key as string."""
         if key in self._schema :
             if key in self._strvalues :
                 return self._strvalues[key]
@@ -382,53 +392,63 @@ class _Configuration (object) :
             return None
 
     def set_value(self,key,value) :
+        """Set value in native format for a key."""
         if key in self._schema :
             strvalue = self._get_strvalue_from_value(key,value)
             self._strvalues[key] = strvalue
             self._values[key] = value
 
     def set_strvalue(self,key,strvalue) :
+        """Set value as string for a key."""
         if key in self._schema :
             value = self._get_value_from_strvalue(key,strvalue)
             self._strvalues[key] = strvalue
             self._values[key] = value
 
     def __len__(self) :
+        """The number of the keys."""
         return len(self._schema)
 
     def __contains__(self,key) :
         return key in self._schema
 
     def __iter__(self) :
+        """foreach key in configuration."""
         keys = self._schema.keys()
         keys.sort(lambda x,y:cmp(self._schema[x]['sortidx'],self._schema[y]['sortidx']) or cmp(x,y))
         return iter(keys)
 
     def get_doc(self,key,lang='en') :
+        """Return the short help (one used in --help)."""
         if key in self._schema :
             return self._schema[key].get('doc',{}).get(lang,'')
         return ''
 
     def need_configure(self,key) :
+        """Return true is the key need to be in the configuration file."""
         need = True
         if ('nosave' in self._schema[key]) and self._schema[key]['nosave'] :
             need = False
         return need
 
     def get_sections(self) :
+        """Return the spectial section (colors for example)."""
         return self._othersections.keys()
 
     def get_section(self,section) :
+        """Return the content of a spectial section."""
         if section in self._othersections :
             return self._othersections[section]
         return None
 
     def set_othersection_item(self,section,key,value) :
+        """Set the content of a key from a spectial section."""
         if section not in self._othersections :
             self._othersections[section] = {}
         self._othersections[section][key] = value
 
 class Configuration (object) :
+    """Borg of _Configuration"""
     _borg_element = _Configuration()
     def __getattribute__(self,name) :
         return object.__getattribute__(self,'_borg_element').__getattribute__(name)

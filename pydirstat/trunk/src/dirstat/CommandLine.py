@@ -12,6 +12,8 @@ class ParseError(Exception) :
     pass
 
 class CommandLine(object) :
+    """This is the command line engine. It doesn't use parseopt because I feel like parseopt is too simple.
+    Command line options should not be separated from configuration file options."""
     ACTION_NONE = 0
     ACTION_DUMP = 1
     ACTION_USAGE = 2
@@ -19,8 +21,10 @@ class CommandLine(object) :
     ACTION_VERSION = 4
 
     def __init__(self,commandline) :
+        """Constructor. Take a command line list."""
         self._commandline = commandline
     def parse(self) :
+        """Parse the command line given to constructor."""
         configuration = Configuration()
 
         minialiases = {}
@@ -92,6 +96,7 @@ class CommandLine(object) :
         return self.ACTION_DUMP
 
     def get_usage(self) :
+        """Return a usage string created from configuration."""
         configuration = Configuration()
         usage = '%s [OPTION]...' % (os.path.basename(self._commandline[0]),)
         for key in schema_default :
@@ -121,6 +126,7 @@ class CommandLine(object) :
         return usage
 
     def get_version_text(self) :
+        """Return a version string."""
         output = '%s %s\n' % (os.path.basename(self._commandline[0]),__version__)
         return output
 
