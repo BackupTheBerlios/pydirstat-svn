@@ -1,4 +1,13 @@
+
 2006-06-19  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * src/dirstat/Configuration.py, src/dirstat/DirInfo.py,
+    src/dirstat/Dumper.py, src/dirstat/FileInfo.py,
+    src/dirstat/FileInfoList.py, src/dirstat/FileTree.py,
+    src/dirstat/SimuQT.py, src/dirstat/SizeColorProvider.py,
+    src/dirstat/TreemapTile.py, src/dirstat/TreemapView.py :
+    New class SizeColorProvider to provide tile's area and color.
+    Now, you can change what parameter is used for tile's area and color.
 
     * src/dirstat/Configuration.py : default configuration : svn-base is now
     consided as a tmp file, and tmp file are now orange and not red.
