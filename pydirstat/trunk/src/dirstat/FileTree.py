@@ -4,6 +4,7 @@ import os
 
 from DirInfo import DirInfo
 from FileInfo import FileInfo
+from SizeColorProvider import sizeColorProvider
 
 if not(hasattr(os,'walk')) :
     import walker
@@ -26,6 +27,8 @@ class FileTree( object ) :
             self._rootpath = rootpath
             self._root = None
         pathinfos = {}
+
+        sizeColorProvider.reinitFileTree()
         for infopath in os.walk(self._rootpath,False) :
             #print "[%s]" % (pathinfos,)
             (path,subpaths,files) = infopath
@@ -50,9 +53,9 @@ class FileTree( object ) :
             for subpath in subpaths :
                 completepath = os.path.join(path,subpath)
                 if completepath in pathinfos :
-                    # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
+                    # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
                     dirInfo.insertChild(pathinfos[completepath])
-                    # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalSize(),completepath)
+                    # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
                     del pathinfos[completepath]
 
             dirInfo.finalizeLocal()
@@ -64,7 +67,7 @@ class FileTree( object ) :
 
 def test():
     f = FileTree(rootpath='c:\\home\\gissehel').scan()
-    print "(%d,%d)" % (f.totalSize(),f.size())
+    print "(%d,%d)" % (f.totalArea(),f.area())
     print "(%d)" % (f.totalSubDirs(),)
     print "(%d)" % (f.totalItems(),)
 

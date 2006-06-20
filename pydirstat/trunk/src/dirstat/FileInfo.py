@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+from SizeColorProvider import sizeColorProvider
 
 FileSizeMax = 9223372036854775807L
 
@@ -24,6 +25,7 @@ class FileInfo( object ):
         self._size         = 0                # size in bytes
         self._blocks       = 0                # 512 bytes blocks
         self._mtime        = 0                # modification time
+        self._area         = 0                # area
 
         self._parent       = parent           # pointer to the parent entry
         self._next         = None             # pointer to the next entry
@@ -37,6 +39,9 @@ class FileInfo( object ):
             if not(self.isSpecial()) :
                 self._size        = statInfo.st_size
                 self._blocks      = getattr(statInfo,'st_blocks',int(statInfo.st_size/512L))
+
+        sizeColorProvider.updateFileInfo(self)
+        self._area = sizeColorProvider.get_area(self)
 
     def isLocalFile(self)                   : return self._isLocalFile
     def name(self)                          : return self._name
@@ -70,10 +75,12 @@ class FileInfo( object ):
     def mode(self)                          : return self._mode
     def links(self)                         : return self._links
     def size(self)                          : return self._size
+    def area(self)                          : return self._area
     def blocks(self)                        : return self._blocks
     def blockSize(self)                     : return 512
     def mtime(self)                         : return self._mtime
     def totalSize(self)                     : return self._size
+    def totalArea(self)                     : return self._area
     def totalBlocks(self)                   : return self._blocks
     def totalItems(self)                    : return 0
     def totalSubDirs(self)                  : return 0

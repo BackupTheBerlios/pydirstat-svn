@@ -23,7 +23,7 @@ class FileInfoList( object ) :
                 currentFileInfo = fileInfo
                 self._fileInfoListSorted = []
                 while currentFileInfo :
-                    if not(self._fileInfoList._minSize) or currentFileInfo.totalSize() >= self._fileInfoList._minSize :
+                    if not(self._fileInfoList._minSize) or currentFileInfo.totalArea() >= self._fileInfoList._minSize :
                         self._fileInfoListSorted.append(currentFileInfo)
                     currentFileInfo = currentFileInfo.next()
                 self._sort()
@@ -59,7 +59,7 @@ class FileInfoList( object ) :
                 if self.isValid() :
                     fileInfo = self._fileInfo
                     self._fileInfo = fileInfo.next()
-                    while self._fileInfo and self._fileInfoList._minSize and self._fileInfo.totalSize() < self._fileInfoList._minSize :
+                    while self._fileInfo and self._fileInfoList._minSize and self._fileInfo.totalArea() < self._fileInfoList._minSize :
                         self._fileInfo = fileInfo.next()
                     return fileInfo
                 else :
@@ -70,7 +70,7 @@ class FileInfoList( object ) :
         if self._bySize :
             class FileInfoListIteratorBySize( FileInfoListIteratorSort ):
                 def _sort(self) :
-                    self._fileInfoListSorted.sort(lambda x,y:-cmp(x.totalSize(),y.totalSize()))
+                    self._fileInfoListSorted.sort(lambda x,y:-cmp(x.totalArea(),y.totalArea()))
 
             iteratorclass = FileInfoListIteratorBySize
 

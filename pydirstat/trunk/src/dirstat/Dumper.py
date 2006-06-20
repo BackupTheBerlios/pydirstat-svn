@@ -57,7 +57,7 @@ class FileDumper( object ) :
             self._size = gsize
         if self._size == None :
             self._size = Size(self._configuration.get_value('width'),self._configuration.get_value('height'))
-        self._treemapview = TreemapView( self._tree, self._size, self._configuration )
+        self._treemapview = TreemapView( self._tree, self._size )
         size = self._treemapview.visibleSize()
 
         if self.NEEDHANDLE :

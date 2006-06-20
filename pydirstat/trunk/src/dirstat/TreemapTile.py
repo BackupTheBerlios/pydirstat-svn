@@ -3,6 +3,7 @@
 from FileInfoList import FileInfoList
 from SimuQT import fmtsize
 from SimuQT import Size, Point, Rect
+from SizeColorProvider import sizeColorProvider
 
 class TreemapTile( object ) :
     """This class is the one the fill the TreemapView. It is directly inspired from KTreemapTile (from KDirStat).
@@ -25,16 +26,16 @@ class TreemapTile( object ) :
 
     def createChildren( self, rect, orientation ) :
         """This method create the tile, and if needed the sub tiles."""
-        if self._fileinfo.totalSize() == 0 :
+        if self._fileinfo.totalArea() == 0 :
             return None
 
         self.createSquarifiedChildren( rect )
 
     def createSquarifiedChildren( self, rect ) :
         """This method create the tile, and if needed the sub tiles using the squarification algo from KDirStat."""
-        if self._fileinfo.totalSize() == 0 :
+        if self._fileinfo.totalArea() == 0 :
             return
-        scale   = (1.0*rect.width()) * (1.0*rect.height()) / (1.0*self._fileinfo.totalSize())
+        scale   = (1.0*rect.width()) * (1.0*rect.height()) / (1.0*self._fileinfo.totalArea())
         minSize = int( self._parentView.minTileSize() / scale )
 
         fileInfoList = FileInfoList( self._fileinfo, minSize=minSize, bySize=True, param='AsSubDir' )
@@ -74,11 +75,11 @@ class TreemapTile( object ) :
         scaledLengthSquare = length * (1.0*length) / scale
 
         while fileInfo and improvingAspectRatio :
-            sum += fileInfo.totalSize()
-            if (len(row)!=0) and (sum != 0) and (fileInfo.totalSize() != 0) :
+            sum += fileInfo.totalArea()
+            if (len(row)!=0) and (sum != 0) and (fileInfo.totalArea() != 0) :
                 sumSquare        = sum * sum
-                worstAspectRatio = max( scaledLengthSquare * row[0].totalSize() / sumSquare,
-                                        sumSquare / ( scaledLengthSquare * fileInfo.totalSize() ) )
+                worstAspectRatio = max( scaledLengthSquare * row[0].totalArea() / sumSquare,
+                                        sumSquare / ( scaledLengthSquare * fileInfo.totalArea() ) )
 
                 if (lastWorstAspectRatio >= 0.0) and (worstAspectRatio > lastWorstAspectRatio) :
                     improvingAspectRatio = False
@@ -107,7 +108,7 @@ class TreemapTile( object ) :
 
         sum = 0
         for fileInfo in row :
-            sum += fileInfo.totalSize()
+            sum += fileInfo.totalArea()
         secondary = int( sum * (1.0*scale) / primary )
 
         if sum == 0 : # Prevent division by zero.
@@ -120,7 +121,7 @@ class TreemapTile( object ) :
         remaining = primary
 
         for fileInfo in row :
-            childSize = int( (1.0*fileInfo.totalSize()) / (1.0* sum) * primary + 0.5 )
+            childSize = int( (1.0*fileInfo.totalArea()) / (1.0* sum) * primary + 0.5 )
             if childSize > remaining : # Prevent overflow because of accumulated rounding errors
                 childSize = remaining
 
@@ -165,11 +166,14 @@ class TreemapTile( object ) :
             y=self.rect().y(),
             width=self.rect().width(),
             height=self.rect().height(),
-            color=self._parentView.tileColor( self._fileinfo ),
+            color=self.tileColor(),
             filename=self._fileinfo.url(),
             filenamestr=iconv(self._fileinfo.url()),
-            filesize=fmtsize(self._fileinfo.totalSize())
+            filesize=fmtsize(self._fileinfo.totalArea())
             )
+
+    def tileColor(self) :
+        return sizeColorProvider.get_color(self._fileinfo)
 
     def _init( self ):
         # [TODO] : find if I need to use Z order

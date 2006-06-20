@@ -20,6 +20,7 @@ class DirInfo( FileInfo ):
         # Some cached values
 
         self._totalSize            = self._size
+        self._totalArea            = self._area
         self._totalBlocks          = self._blocks
         self._totalItems           = 0
         self._totalSubDirs         = 0
@@ -44,6 +45,12 @@ class DirInfo( FileInfo ):
         if self._summaryDirty :
             self.recalc()
         return self._totalSize
+
+    def totalArea(self) :
+        """Return the total area of the special data used for area of tiles."""
+        if self._summaryDirty :
+            self.recalc()
+        return self._totalArea
 
     def totalBlocks(self) :
         """Return the total dir size used by block."""
@@ -130,6 +137,7 @@ class DirInfo( FileInfo ):
         """Called when a new child is added."""
         if not(self._summaryDirty) :
             self._totalSize      += newChild.totalSize()
+            self._totalArea      += newChild.totalArea()
             self._totalBlocks    += newChild.totalBlocks()
             self._totalItems     += 1
 
@@ -225,6 +233,7 @@ class DirInfo( FileInfo ):
     def recalc(self) :
         """recalc data for the directory. Used as a cache to calculate only once information if nothing changed since last call."""
         self._totalSize          = self._size
+        self._totalArea          = self._area
         self._totalBlocks        = self._blocks
         self._totalItems         = 0
         self._totalSubDirs       = 0
@@ -233,6 +242,7 @@ class DirInfo( FileInfo ):
 
         for fileInfo in FileInfoList(self,'AsSubDir') :
             self._totalSize      += fileInfo.totalSize()
+            self._totalArea      += fileInfo.totalArea()
             self._totalBlocks    += fileInfo.totalBlocks()
             self._totalItems     += fileInfo.totalItems() + 1
             self._totalSubDirs   += fileInfo.totalSubDirs()

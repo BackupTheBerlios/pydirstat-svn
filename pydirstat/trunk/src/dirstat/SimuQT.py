@@ -259,7 +259,7 @@ class Color( object ):
     def __str__( self ):
         return self.get_htmlcolor()
     def __repr__( self ):
-        return "Color(0x%02d,0x%02x,0x%02x)" % (self._r, self._g, self._b)
+        return "Color(0x%02x,0x%02x,0x%02x)" % (self._r, self._g, self._b)
 
 class Canvas( object ):
     """Simulate a QCanvas."""
