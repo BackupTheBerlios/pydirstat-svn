@@ -2,6 +2,7 @@
 
 from Configuration import Configuration
 from SimuQT import Color
+import time
 
 class SizeColorProvider( object ) :
     def __init__(self) :
@@ -11,6 +12,7 @@ class SizeColorProvider( object ) :
             'int:size' : self.get_integer_size,
             'int:blocks' : self.get_integer_blocks,
             'int:mtime' : self.get_integer_mtime,
+            'int:mtimefromnow' : self.get_integer_mtimefromnow,
             'int:one' : self.get_integer_one,
             'int:onefile' : self.get_integer_onefile,
             'type' : self.get_color_type,
@@ -22,6 +24,8 @@ class SizeColorProvider( object ) :
     def reinitFileTree(self) :
         area_data_provider = self._configuration.get_value('area')
         color_data_provider = self._configuration.get_value('color')
+
+        self._now = time.time()
 
         if color_data_provider[0:len('int:')]=='int:' :
             # gradient
@@ -122,6 +126,11 @@ class SizeColorProvider( object ) :
 
     def get_integer_mtime(self,fileinfo) :
         return fileinfo.mtime()
+
+    def get_integer_mtimefromnow(self,fileinfo) :
+        if fileinfo.isDir() :
+            return 0
+        return self._now-fileinfo.mtime()
 
     def get_integer_one(self,fileinfo) :
         return 1
