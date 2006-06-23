@@ -125,12 +125,12 @@ class SizeColorProvider( object ) :
         return fileinfo.blocks()
 
     def get_integer_mtime(self,fileinfo) :
-        return fileinfo.mtime()
+        return int(fileinfo.mtime())
 
     def get_integer_mtimefromnow(self,fileinfo) :
         if fileinfo.isDir() :
             return 0
-        return self._now-fileinfo.mtime()
+        return int(self._now-fileinfo.mtime())
 
     def get_integer_one(self,fileinfo) :
         return 1
