@@ -137,6 +137,7 @@ schema = {
     'area' : {
         'default' : 'int:size',
         'type' : str,
+        'minialias' : '',
         'nosave' : False,
         'doc' : {
             'en' : "Data prodiver for tiles area",
@@ -149,6 +150,7 @@ schema = {
     'color' : {
         'default' : 'type',
         'type' : str,
+        'minialias' : '',
         'nosave' : False,
         'doc' : {
             'en' : "Data prodiver for tiles color",

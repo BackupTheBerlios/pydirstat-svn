@@ -114,10 +114,14 @@ class CommandLine(object) :
         usage += '\n'
         usage += 'Options may be :\n'
         for key in configuration :
-            if schema[key]['needvalue'] :
-                partline = '  -%s, --%s=%s' % (schema[key]['minialias'],key,schema[key]['cmdlinename'])
+            if ('minialias' in schema[key]) and (schema[key]['minialias']!='') :
+                minialiasstring = '-%s,' % schema[key]['minialias']
             else :
-                partline = '  -%s, --%s' % (schema[key]['minialias'],key,)
+                minialiasstring = '   '
+            if schema[key]['needvalue'] :
+                partline = '  %s --%s=%s' % (minialiasstring,key,schema[key]['cmdlinename'])
+            else :
+                partline = '  %s --%s' % (minialiasstring,key,)
             partline += ' '*(30-len(partline))
             partline += '%s\n' % (schema[key]['doc']['en'],)
             usage += partline
