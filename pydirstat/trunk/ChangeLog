@@ -1,3 +1,10 @@
+2006-10-06  Gissehel <gissehel-pds@giss.mine.nu>
+
+    * src/dirstat/Dumper.py, src/dirstat/FileInfo.py,
+      src/dirstat/FileTree.py, src/dirstat/TreemapView.py,
+      src/dirstat/FileProvider.py : Adding a FileProvider class to be able
+      to browse something else than localdir.
+
 2006-06-23  Gissehel <gissehel-pds@giss.mine.nu>
 
     * pysirstat 0.9.14

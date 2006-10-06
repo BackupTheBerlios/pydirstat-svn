@@ -2,8 +2,66 @@
 
 import os
 import walker
+import posixpath
 
-class FileProvider(object) :
+class StatInfoBase(object) :
+    def __init__(self,url) :
+        self._url = url
+    def st_dev(self) :
+        return 0
+    def st_mode(self) :
+        return 0
+    def st_nlink(self) :
+        return 0
+    def st_mtime(self) :
+        return 0
+    def st_size(self) :
+        return 0
+    def st_blocks(self) :
+        return 0
+    def st_dev(self) :
+        return 0
+    def is_dir(self) :
+        return False
+    def is_reg(self) :
+        return False
+    def is_lnk(self) :
+        return False
+    def is_blk(self) :
+        return False
+    def is_chr(self) :
+        return False
+    def is_fifo(self) :
+        return False
+    def is_sock(self) :
+        return False
+
+class FileProviderBase(object) :
+    """The base of all classes of FileProvider.
+
+    This class does quite nothing. It's purpose is to provide basic
+    default implementation for a FileProvider. posixpath
+    (/ style path) is used even on windows (\\ style path).
+
+    It can't walk."""
+    def __init__(self,url) :
+        self._url = url
+    def walk(self) :
+        return []
+    def split(self,path) :
+        return posixpath.split(path)
+    def join(self,*args) :
+        return posixpath.join(*args)
+    def abspath(self,path) :
+        return path
+    def stat(self,url) :
+        return StatInfoBase(file)
+
+class FileProviderLocal(FileProviderBase) :
+    """The local FileProvider.
+
+    It use the os package to do its dirty job, so
+    it may be quite portable."""
     def __init__(self,url) :
         self._url = url
         self._walker = None
@@ -20,7 +78,7 @@ class FileProvider(object) :
     def abspath(self,path) :
         return os.path.abspath(path)
     def stat(self,file) :
-        class StatInfo(object) :
+        class StatInfo(StatInfoBase) :
             def __init__(self,file) :
                 self._lstat = os.lstat(file)
             def st_dev(self) :
@@ -53,3 +111,6 @@ class FileProvider(object) :
                 return os.path.stat.S_ISSOCK ( self._lstat.st_mode )
 
         return StatInfo(file)
+
+# For now, only the local file provider can be used
+FileProvider = FileProviderLocal
