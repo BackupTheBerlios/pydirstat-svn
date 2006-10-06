@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 
-import os
-
 from DirInfo import DirInfo
 from FileInfo import FileInfo
 from SizeColorProvider import sizeColorProvider
-
-if not(hasattr(os,'walk')) :
-    import walker
-    os.walk = walker.walker
+from FileProvider import FileProvider
 
 class FileTree( object ) :
     """This class scan a directory and create a tree of FileInfo."""
@@ -16,6 +11,10 @@ class FileTree( object ) :
         """Constructor"""
         self._rootpath = rootpath
         self._root = None
+        self._file_provider = None
+
+    def file_provider(self) :
+        return self._file_provider
 
     def root( self ) :
         """Return the root FileInfo (usually a DirInfo)."""
@@ -29,29 +28,31 @@ class FileTree( object ) :
         pathinfos = {}
 
         sizeColorProvider.reinitFileTree()
-        for infopath in os.walk(self._rootpath,False) :
+        self._file_provider = FileProvider(self._rootpath)
+
+        for infopath in self.file_provider().walk() :
             #print "[%s]" % (pathinfos,)
             (path,subpaths,files) = infopath
 
             if path == self._rootpath :
                 name = path
             else :
-                name = os.path.split(path)[1]
+                name = self.file_provider().split(path)[1]
 
-            dirInfo = DirInfo( name=name, statInfo=os.lstat(path), tree=self )
+            dirInfo = DirInfo( name=name, statInfo=self.file_provider().stat(path), tree=self )
 
             pathinfos[path] = dirInfo
 
             for file in files :
-                completepath = os.path.join(path,file)
+                completepath = self.file_provider().join(path,file)
                 try :
-                    fileInfo = FileInfo( name=file, statInfo=os.lstat(completepath), tree=self, parent=dirInfo )
+                    fileInfo = FileInfo( name=file, statInfo=self.file_provider().stat(completepath), tree=self, parent=dirInfo )
                     dirInfo.insertChild(fileInfo)
                 except :
                     pass
 
             for subpath in subpaths :
-                completepath = os.path.join(path,subpath)
+                completepath = self.file_provider().join(path,subpath)
                 if completepath in pathinfos :
                     # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
                     dirInfo.insertChild(pathinfos[completepath])

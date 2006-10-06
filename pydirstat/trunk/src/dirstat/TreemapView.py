@@ -4,7 +4,6 @@ DefaultMinTileSize          = 3
 UpdateMinSize               = 2
 
 from SimuQT import Point, Rect, Canvas
-import os
 from TreemapTile import TreemapTile
 
 class TreemapView( object ):

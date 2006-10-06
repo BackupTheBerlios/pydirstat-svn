@@ -75,7 +75,7 @@ class FileDumper( object ) :
         return [
             ('Generator', 'pydirstat'),
             ('Version', __version__),
-            ('Directory', os.path.abspath(self._rootpath)),
+            ('Directory', self._tree.file_provider().abspath(self._rootpath)),
             ('Total Size',fmtsize(self._treemapview.rootTile().fileinfo().totalSize())),
             ('Date', time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())),
             ('Configuration File',self._configuration.get_filename()),

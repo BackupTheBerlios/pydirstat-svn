@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import os
 from SizeColorProvider import sizeColorProvider
 
 FileSizeMax = 9223372036854775807L
@@ -31,14 +30,15 @@ class FileInfo( object ):
         self._next         = None             # pointer to the next entry
         self._tree         = tree             # pointer to the parent tree
 
+        self._statInfo = statInfo
         if statInfo :
-            self._device      = statInfo.st_dev
-            self._mode        = statInfo.st_mode
-            self._links       = statInfo.st_nlink
-            self._mtime       = statInfo.st_mtime
+            self._device      = self._statInfo.st_dev()
+            self._mode        = self._statInfo.st_mode()
+            self._links       = self._statInfo.st_nlink()
+            self._mtime       = self._statInfo.st_mtime()
             if not(self.isSpecial()) :
-                self._size        = statInfo.st_size
-                self._blocks      = getattr(statInfo,'st_blocks',int(statInfo.st_size/512L))
+                self._size        = self._statInfo.st_size()
+                self._blocks      = self._statInfo.st_blocks()
 
         sizeColorProvider.updateFileInfo(self)
         self._area = sizeColorProvider.get_area(self)
@@ -52,10 +52,7 @@ class FileInfo( object ):
             parentUrl = self._parent.url()
             if self.isDotEntry() :
                 return parentUrl
-            if parentUrl == "/" :
-                return parentUrl + self._name
-            else :
-                return parentUrl + os.sep + self._name
+            return self._tree.file_provider().join(parentUrl,self._name)
         else :
             return self._name
 
@@ -133,20 +130,18 @@ class FileInfo( object ):
     def readState(self)                     : return 'Finished'
     def isDirInfo(self)                     : return False
 
-    def isDir(self)                         :
-        # print "-[%s]-[%s]" % (self._name,os.path.stat.S_ISDIR ( self._mode ))
-        return os.path.stat.S_ISDIR ( self._mode )
-    def isFile(self)                        : return os.path.stat.S_ISREG ( self._mode )
-    def isSymLink(self)                     : return os.path.stat.S_ISLNK ( self._mode )
-    def isDevice(self)                      : return os.path.stat.S_ISBLK ( self._mode ) or os.path.stat.S_ISCHR ( self._mode )
-    def isBlockDevice(self)                 : return os.path.stat.S_ISBLK ( self._mode )
-    def isCharDevice(self)                  : return os.path.stat.S_ISCHR ( self._mode )
+    def isDir(self)                         : return self._statInfo.is_dir()
+    def isFile(self)                        : return self._statInfo.is_reg()
+    def isSymLink(self)                     : return self._statInfo.is_lnk()
+    def isDevice(self)                      : return self._statInfo.is_blk() or self._statInfo.is_chr()
+    def isBlockDevice(self)                 : return self._statInfo.is_blk()
+    def isCharDevice(self)                  : return self._statInfo.is_chr()
     def isSpecial(self)                     :
         return (
-            os.path.stat.S_ISBLK ( self._mode ) or
-            os.path.stat.S_ISCHR ( self._mode ) or
-            os.path.stat.S_ISFIFO( self._mode ) or
-            os.path.stat.S_ISSOCK( self._mode )
+            self._statInfo.is_blk() or
+            self._statInfo.is_chr() or
+            self._statInfo.is_fifo() or
+            self._statInfo.is_sock()
             )
 
 def test():
