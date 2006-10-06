@@ -9,9 +9,15 @@ class FileTree( object ) :
     """This class scan a directory and create a tree of FileInfo."""
     def __init__(self, rootpath=None) :
         """Constructor"""
+
+        if FileProvider.supports_unicode_filenames :
+            rootpath = unicode(rootpath)
+        else :
+            rootpath = str(rootpath)
+
         self._rootpath = rootpath
         self._root = None
-        self._file_provider = None
+        self._file_provider = FileProvider(self._rootpath)
 
     def file_provider(self) :
         return self._file_provider
@@ -19,6 +25,10 @@ class FileTree( object ) :
     def root( self ) :
         """Return the root FileInfo (usually a DirInfo)."""
         return self._root
+
+    def rootpath( self ) :
+        """Return the rootpath (a str or unicode)."""
+        return self._rootpath
 
     def scan( self, rootpath=None ) :
         """Scan the rootpath and build the tree."""
@@ -28,7 +38,6 @@ class FileTree( object ) :
         pathinfos = {}
 
         sizeColorProvider.reinitFileTree()
-        self._file_provider = FileProvider(self._rootpath)
 
         for infopath in self.file_provider().walk() :
             #print "[%s]" % (pathinfos,)
@@ -39,14 +48,14 @@ class FileTree( object ) :
             else :
                 name = self.file_provider().split(path)[1]
 
-            dirInfo = DirInfo( name=name, statInfo=self.file_provider().stat(path), tree=self )
+            dirInfo = DirInfo( name=self.file_provider().get_clean_name(name), statInfo=self.file_provider().stat(path), tree=self )
 
             pathinfos[path] = dirInfo
 
             for file in files :
                 completepath = self.file_provider().join(path,file)
                 try :
-                    fileInfo = FileInfo( name=file, statInfo=self.file_provider().stat(completepath), tree=self, parent=dirInfo )
+                    fileInfo = FileInfo( name=self.file_provider().get_clean_name(file), statInfo=self.file_provider().stat(completepath), tree=self, parent=dirInfo )
                     dirInfo.insertChild(fileInfo)
                 except :
                     pass

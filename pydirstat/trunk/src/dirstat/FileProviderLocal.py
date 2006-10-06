@@ -10,6 +10,9 @@ class FileProviderLocal(FileProviderBase) :
 
     It use the os package to do its dirty job, so
     it may be quite portable."""
+
+    supports_unicode_filenames = os.path.supports_unicode_filenames
+
     def __init__(self,url) :
         self._url = url
         self._walker = None

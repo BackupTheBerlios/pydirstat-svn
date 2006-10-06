@@ -42,6 +42,9 @@ class FileProviderBase(object) :
     (/ style path) is used even on windows (\\ style path).
 
     It can't walk."""
+
+    supports_unicode_filenames = False
+
     def __init__(self,url) :
         self._url = url
     def walk(self) :
@@ -54,4 +57,7 @@ class FileProviderBase(object) :
         return path
     def stat(self,url) :
         return StatInfoBase(file)
+    def get_clean_name(self,file) :
+        return file
+
 

@@ -27,15 +27,10 @@ class FileDumper( object ) :
         if rootpath == None :
             rootpath = '.'
 
-        if os.path.supports_unicode_filenames :
-            rootpath = unicode(rootpath)
-        else :
-            rootpath = str(rootpath)
-
         tree = FileTree(rootpath)
         tree.scan()
 
-        self._rootpath = rootpath
+        self._rootpath = tree.rootpath()
         self._tree = tree
         filename = outputfile
 
@@ -43,10 +38,10 @@ class FileDumper( object ) :
             filename = self._configuration.get_value('outputfile')
 
         if filename == '' :
-            if os.path.isdir(rootpath) :
-                filename = os.path.join(rootpath,self._configuration.get_value('basename')+self.EXT)
+            if os.path.isdir(self._rootpath) :
+                filename = os.path.join(self._rootpath,self._configuration.get_value('basename')+self.EXT)
             else :
-                name = os.path.split(rootpath)[1]
+                name = os.path.split(self._rootpath)[1]
                 filename = name + '.' + self._configuration.get_value('basename') + self.EXT
         self._filename = filename
         self._size = None
