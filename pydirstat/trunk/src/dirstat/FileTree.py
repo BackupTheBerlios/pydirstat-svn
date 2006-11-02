@@ -4,6 +4,7 @@ from DirInfo import DirInfo
 from FileInfo import FileInfo
 from SizeColorProvider import sizeColorProvider
 from FileProvider import FileProvider
+import re
 
 class FileTree( object ) :
     """This class scan a directory and create a tree of FileInfo."""
@@ -18,6 +19,14 @@ class FileTree( object ) :
         self._rootpath = rootpath
         self._root = None
         self._file_provider = FileProvider(self._rootpath)
+        self._exclude_list = []
+        self._exclude_list_re = []
+
+    def set_exclude_list(self,exclude_list) :
+        self._exclude_list = exclude_list
+
+    def set_exclude_list_re(self,exclude_list_re) :
+        self._exclude_list_re = exclude_list_re
 
     def file_provider(self) :
         return self._file_provider
@@ -39,6 +48,14 @@ class FileTree( object ) :
 
         sizeColorProvider.reinitFileTree()
 
+        exclude_list_re = []
+
+        for exclude_item in self._exclude_list :
+            exclude_list_re.append(re.compile('^'+str(exclude_item).replace('\\','\\\\').replace('.','\\.').replace('[','\\[').replace(']','\\]').replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('*','.*').replace('?','.')+'$'))
+
+        for exclude_item_re in self._exclude_list_re :
+            exclude_list_re.append(re.compile(exclude_item_re))
+
         for infopath in self.file_provider().walk() :
             #print "[%s]" % (pathinfos,)
             (path,subpaths,files) = infopath
@@ -53,20 +70,30 @@ class FileTree( object ) :
             pathinfos[path] = dirInfo
 
             for file in files :
-                completepath = self.file_provider().join(path,file)
-                try :
-                    fileInfo = FileInfo( name=self.file_provider().get_clean_name(file), statInfo=self.file_provider().stat(completepath), tree=self, parent=dirInfo )
-                    dirInfo.insertChild(fileInfo)
-                except :
-                    pass
+                exclude = False
+                for exclude_item_re in exclude_list_re :
+                    if exclude_item_re.match(file) :
+                        exclude = True
+                if not(exclude) :
+                    completepath = self.file_provider().join(path,file)
+                    try :
+                        fileInfo = FileInfo( name=self.file_provider().get_clean_name(file), statInfo=self.file_provider().stat(completepath), tree=self, parent=dirInfo )
+                        dirInfo.insertChild(fileInfo)
+                    except :
+                        pass
 
             for subpath in subpaths :
-                completepath = self.file_provider().join(path,subpath)
-                if completepath in pathinfos :
-                    # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
-                    dirInfo.insertChild(pathinfos[completepath])
-                    # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
-                    del pathinfos[completepath]
+                exclude = False
+                for exclude_item_re in exclude_list_re :
+                    if exclude_item_re.match(subpath) :
+                        exclude = True
+                if not(exclude) :
+                    completepath = self.file_provider().join(path,subpath)
+                    if completepath in pathinfos :
+                        # print "[%s] : %d v (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
+                        dirInfo.insertChild(pathinfos[completepath])
+                        # print "[%s] : %d ^ (%s)" % (subpath,pathinfos[completepath].totalArea(),completepath)
+                        del pathinfos[completepath]
 
             dirInfo.finalizeLocal()
 

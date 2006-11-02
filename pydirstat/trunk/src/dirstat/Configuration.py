@@ -160,6 +160,45 @@ schema = {
         'needvalue' : True,
         'cmdlinename' : 'DATAPROV',
         },
+    'exclude-list' : {
+        'default' : '',
+        'type' : str,
+        'minialias' : 'e',
+        'nosave' : False,
+        'doc' : {
+            'en' : "List of patterns to exclude when searching files",
+            'fr' : "Liste de motifs a exclure dans les noms de fichiers",
+            },
+        'sortidx' : 210,
+        'needvalue' : True,
+        'cmdlinename' : 'LIST',
+        },
+    'exclude-list-re' : {
+        'default' : '',
+        'type' : str,
+        'minialias' : 'e',
+        'nosave' : False,
+        'doc' : {
+            'en' : "Like exclude-list but use regexp",
+            'fr' : "Fonctionne comme exclude-list mais avec des regexp",
+            },
+        'sortidx' : 211,
+        'needvalue' : True,
+        'cmdlinename' : 'LIST',
+        },
+    'exclude-list-sep' : {
+        'default' : ',',
+        'type' : str,
+        'minialias' : '',
+        'nosave' : False,
+        'doc' : {
+            'en' : "Char to separate exclude-list items",
+            'fr' : "Caractere de sepration pour les items de exclude-list",
+            },
+        'sortidx' : 220,
+        'needvalue' : True,
+        'cmdlinename' : 'CHAR',
+        },
     }
 
 othersections = {

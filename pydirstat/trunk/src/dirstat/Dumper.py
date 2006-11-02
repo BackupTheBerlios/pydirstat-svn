@@ -28,6 +28,22 @@ class FileDumper( object ) :
             rootpath = '.'
 
         tree = FileTree(rootpath)
+
+        # handle --exclude-list, to exclude some files/path based on name
+        exclude_list_sep = self._configuration.get_value('exclude-list-sep')
+
+        # Ok, we split the string 'exclude-list' on exclude_list_sep, then we remove starting and ending whitespaces, and we remove empty strings
+        # "   praf,,, ,glut,  ,monk  " will return [ 'praf', 'glut, 'monk' ]
+        exclude_list = filter(lambda x:len(x)>0,map(lambda x:x.strip(' '),self._configuration.get_value('exclude-list').split(exclude_list_sep)))
+        print exclude_list
+
+        # Ok, we split the string 'exclude-list-re' on exclude_list_sep, then we remove starting and ending whitespaces, and we remove empty strings
+        # "   praf,,, ,glut,  ,monk  " will return [ 'praf', 'glut, 'monk' ]
+        exclude_list_re = filter(lambda x:len(x)>0,map(lambda x:x.strip(' '),self._configuration.get_value('exclude-list-re').split(exclude_list_sep)))
+
+        tree.set_exclude_list(exclude_list)
+        tree.set_exclude_list_re(exclude_list_re)
+
         tree.scan()
 
         self._rootpath = tree.rootpath()
