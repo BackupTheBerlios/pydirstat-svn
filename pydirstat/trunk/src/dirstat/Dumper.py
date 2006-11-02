@@ -35,7 +35,6 @@ class FileDumper( object ) :
         # Ok, we split the string 'exclude-list' on exclude_list_sep, then we remove starting and ending whitespaces, and we remove empty strings
         # "   praf,,, ,glut,  ,monk  " will return [ 'praf', 'glut, 'monk' ]
         exclude_list = filter(lambda x:len(x)>0,map(lambda x:x.strip(' '),self._configuration.get_value('exclude-list').split(exclude_list_sep)))
-        print exclude_list
 
         # Ok, we split the string 'exclude-list-re' on exclude_list_sep, then we remove starting and ending whitespaces, and we remove empty strings
         # "   praf,,, ,glut,  ,monk  " will return [ 'praf', 'glut, 'monk' ]

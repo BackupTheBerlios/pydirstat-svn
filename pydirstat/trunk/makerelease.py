@@ -80,6 +80,7 @@ def make_version_files():
 
     handle = open(os.path.join('nsis','version.nsi'),'wt')
     handle.write('!define PRODUCT_VERSION "%s"\n' % version)
+    handle.write('!define PYTHON_VERSION "%d.%d"\n' % sys.version_info[:2])
     handle.close()
 
     # setup.py use it's own way to read VERSION
